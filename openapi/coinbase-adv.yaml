@@ -1,0 +1,125 @@
+openapi: 3.0.3
+info:
+  title: Coinbase Advanced Trading API
+  description: OpenAPI 3.x specification for Coinbase Adavanced Trading
+  version: 1.0.0
+servers:
+  - url: 'https://api.coinbase.com/api/v3'
+    description: Quotes API
+
+externalDocs:
+  description: Coinbase Advanced Trading Docs
+  url: https://docs.cloud.coinbase.com/advanced-trade-api/docs/welcome
+tags:
+  - name: coinbaseAdv
+    description: Coinbase Advanced Trading
+security:
+  - bearerAuth: []
+
+paths:
+  "/brokerage/accounts":
+    get:
+      deprecated: false
+      description: List accounts for the user
+      operationId: ListAccounts
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            format: int32
+        - in: query
+          name: cursor
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAccountsResponse'
+          description: OK
+        '401':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Unauthorized
+        '403':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Forbidden
+        '404':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Not Found
+      summary: ListAccounts
+      tags:
+        - coinbaseAdv
+
+components:
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+
+  schemas:
+    ListAccountsResponse:
+      properties:
+        has_next:
+          type: boolean
+        cursor:
+          type: string
+        size:
+          type: integer
+          format: int32
+        accounts:
+          type: array
+          items:
+            type: object
+            properties:
+              uuid:
+                type: string
+              name:
+                type: string
+              currency:
+                type: string
+              available_balance:
+                type: object
+                properties:
+                  value:
+                    type: number
+                    format: double
+                    x-go-srctype-tag:
+                      - string
+                  currency:
+                    type: string
+              default:
+                type: boolean
+              active:
+                type: boolean
+              created_at:
+                type: string
+              updated_at:
+                type: string
+              deleted_at:
+                type: string
+                format: nullable
+              type:
+                type: string
+              ready:
+                type: boolean
+              hold:
+                type: object
+                properties:
+                  value:
+                    type: number
+                    format: double
+                    x-go-srctype-tag:
+                      - string
+                  currency:
+                    type: string
