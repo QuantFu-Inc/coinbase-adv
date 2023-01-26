@@ -117,6 +117,38 @@ paths:
             type: array
             items:
               $ref: '#/components/schemas/OrderStatus'
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: start_date
+          schema:
+            type: string
+        - in: query
+          name: end_date
+          schema:
+            type: string
+        - in: query
+          name: user_native_currency
+          schema:
+            type: string
+        - in: query
+          name: order_type
+          schema:
+            type: string
+        - in: query
+          name: order_side
+          schema:
+            type: string
+        - in: query
+          name: product_type
+          schema:
+            type: string
+        - in: query
+          name: cursor
+          schema:
+            type: string
       responses:
         '200':
           content:
@@ -146,6 +178,64 @@ paths:
       tags:
         - coinbaseAdv
 
+  "/brokerage/orders/historical/fills":
+    get:
+      deprecated: false
+      description: Get historcal fills
+      operationId: ListFills
+      parameters:
+        - in: query
+          name: order_id
+          schema:
+            type: string
+        - in: query
+          name: product_id
+          schema:
+            type: string
+        - in: query
+          name: start_sequence_timestamp
+          schema:
+            type: string
+        - in: query
+          name: end_sequence_timestamp
+          schema:
+            type: string
+        - in: query
+          name: limit
+          schema:
+            type: integer
+        - in: query
+          name: cursor
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListFillsResponse'
+          description: OK
+        '401':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Unauthorized
+        '403':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Forbidden
+        '404':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Not Found
+      summary: ListOrders
+      tags:
+        - coinbaseAdv
 
 
 components:
@@ -155,6 +245,15 @@ components:
       scheme: bearer
 
   schemas:
+
+    ListFillsResponse:
+      properties:
+        fills:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderFill'
+        cursor:
+          type: string
 
     ListOrdersResponse:
       properties:
@@ -169,6 +268,47 @@ components:
         has_next:
           type: boolean
         cursor:
+          type: string
+
+    OrderFill:
+      type: object
+      properties:
+        entry_id:
+          type: string
+        trade_id:
+          type: string
+        order_id:
+          type: string
+        trade_time:
+          type: string
+        trade_type:
+          type: string
+        price:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        size:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        commission:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        sequence_timestamp:
+          type: string
+        liquidity_indicator:
+          type: string
+        size_in_quote:
+          type: boolean
+        product_id:
+          type: string
+        user_id:
+          type: string
+        side:
           type: string
 
     Order:
@@ -191,6 +331,85 @@ components:
                   format: double
                   x-go-srctype-tag:
                     - string
+                base_size:
+                  type: number
+                  format: double
+                  x-go-srctype-tag:
+                    - string
+        limit_limit_gtc:
+          type: object
+          properties:
+            base_size:
+              type: number
+              format: double
+              x-go-srctype-tag:
+                - string
+            limit_price:
+              type: number
+              format: double
+              x-go-srctype-tag:
+                - string
+            post_only:
+              type: boolean
+        limit_limit_gtd:
+          type: object
+          properties:
+            base_size:
+              type: number
+              format: double
+              x-go-srctype-tag:
+                - string
+            limit_price:
+              type: number
+              format: double
+              x-go-srctype-tag:
+                - string
+            end_time:
+              type: string
+            post_only:
+              type: boolean
+        stop_limit_stop_limit_gtc:
+          type: object
+          properties:
+            base_size:
+              type: number
+              format: double
+              x-go-srctype-tag:
+                - string
+            limit_price:
+              type: number
+              format: double
+              x-go-srctype-tag:
+                - string
+            stop_price:
+              type: number
+              format: double
+              x-go-srctype-tag:
+                - string
+            stop_direction:
+              type: string
+        stop_limit_stop_limit_gtd:
+          type: object
+          properties:
+            base_size:
+              type: number
+              format: double
+              x-go-srctype-tag:
+                - string
+            limit_price:
+              type: number
+              format: double
+              x-go-srctype-tag:
+                - string
+            stop_price:
+              type: number
+              format: double
+              x-go-srctype-tag:
+                - string
+            end_time:
+              type: string
+            stop_direction:
+              type: string
         side:
           type: string
         client_order_id:

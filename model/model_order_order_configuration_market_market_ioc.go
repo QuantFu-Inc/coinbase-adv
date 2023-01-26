@@ -17,6 +17,7 @@ import (
 // OrderOrderConfigurationMarketMarketIoc struct for OrderOrderConfigurationMarketMarketIoc
 type OrderOrderConfigurationMarketMarketIoc struct {
 	QuoteSize *float64 `json:"quote_size,omitempty,string"`
+	BaseSize *float64 `json:"base_size,omitempty,string"`
 }
 
 // NewOrderOrderConfigurationMarketMarketIoc instantiates a new OrderOrderConfigurationMarketMarketIoc object
@@ -68,10 +69,45 @@ func (o *OrderOrderConfigurationMarketMarketIoc) SetQuoteSize(v float64) {
 	o.QuoteSize = &v
 }
 
+// GetBaseSize returns the BaseSize field value if set, zero value otherwise.
+func (o *OrderOrderConfigurationMarketMarketIoc) GetBaseSize() float64 {
+	if o == nil || isNil(o.BaseSize) {
+		var ret float64
+		return ret
+	}
+	return *o.BaseSize
+}
+
+// GetBaseSizeOk returns a tuple with the BaseSize field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *OrderOrderConfigurationMarketMarketIoc) GetBaseSizeOk() (*float64, bool) {
+	if o == nil || isNil(o.BaseSize) {
+    return nil, false
+	}
+	return o.BaseSize, true
+}
+
+// HasBaseSize returns a boolean if a field has been set.
+func (o *OrderOrderConfigurationMarketMarketIoc) HasBaseSize() bool {
+	if o != nil && !isNil(o.BaseSize) {
+		return true
+	}
+
+	return false
+}
+
+// SetBaseSize gets a reference to the given float64 and assigns it to the BaseSize field.
+func (o *OrderOrderConfigurationMarketMarketIoc) SetBaseSize(v float64) {
+	o.BaseSize = &v
+}
+
 func (o OrderOrderConfigurationMarketMarketIoc) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
 	if !isNil(o.QuoteSize) {
 		toSerialize["quote_size"] = o.QuoteSize
+	}
+	if !isNil(o.BaseSize) {
+		toSerialize["base_size"] = o.BaseSize
 	}
 	return json.Marshal(toSerialize)
 }
