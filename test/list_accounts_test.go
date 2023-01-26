@@ -8,8 +8,7 @@ import (
 )
 
 func Test_ListAccounts(t *testing.T) {
-	//devToken := "8e263c0bd4673380acf4b67956c1ebe5e048bbe7979e42888f1f372e03a03863"
-	//
+	//devToken := os.Getenv("CB-ACTOKEN")
 	//creds := client.Credentials{AccessToken: devToken}
 
 	creds := client.Credentials{
@@ -20,7 +19,7 @@ func Test_ListAccounts(t *testing.T) {
 
 	cln := client.NewClient(&creds)
 
-	rsp, err := cln.ListAccounts(nil, nil)
+	rsp, err := cln.ListAccounts(nil)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -34,13 +33,17 @@ func Test_ListAccounts(t *testing.T) {
 
 	for _, a := range rsp.Accounts {
 		if a.AvailableBalance.GetValue() > 0 {
-			fmt.Printf("[%s] %f\n", a.GetCurrency(), a.AvailableBalance.GetValue())
+			fmt.Printf("[%s] [%s] %f\n", a.GetUuid(), a.GetCurrency(), a.AvailableBalance.GetValue())
 		}
 	}
 
 	for rsp.GetHasNext() {
 
-		rsp, err = cln.ListAccounts(nil, rsp.Cursor)
+		p := client.ListAccountsParams{
+			Cursor: rsp.Cursor,
+		}
+
+		rsp, err = cln.ListAccounts(&p)
 		if err != nil {
 			fmt.Println(err)
 			t.FailNow()
@@ -49,7 +52,7 @@ func Test_ListAccounts(t *testing.T) {
 
 		for _, a := range rsp.Accounts {
 			if a.AvailableBalance.GetValue() > 0 {
-				fmt.Printf("[%s] %f\n", a.GetCurrency(), a.AvailableBalance.GetValue())
+				fmt.Printf("[%s] [%s] %f\n", a.GetUuid(), a.GetCurrency(), a.AvailableBalance.GetValue())
 			}
 		}
 	}

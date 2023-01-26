@@ -14,12 +14,12 @@ import (
 	"encoding/json"
 )
 
-// ListAccountsResponseAccountsInner struct for ListAccountsResponseAccountsInner
-type ListAccountsResponseAccountsInner struct {
+// Account struct for Account
+type Account struct {
 	Uuid *string `json:"uuid,omitempty"`
 	Name *string `json:"name,omitempty"`
 	Currency *string `json:"currency,omitempty"`
-	AvailableBalance *ListAccountsResponseAccountsInnerAvailableBalance `json:"available_balance,omitempty"`
+	AvailableBalance *AccountAvailableBalance `json:"available_balance,omitempty"`
 	Default *bool `json:"default,omitempty"`
 	Active *bool `json:"active,omitempty"`
 	CreatedAt *string `json:"created_at,omitempty"`
@@ -27,28 +27,28 @@ type ListAccountsResponseAccountsInner struct {
 	DeletedAt *string `json:"deleted_at,omitempty"`
 	Type *string `json:"type,omitempty"`
 	Ready *bool `json:"ready,omitempty"`
-	Hold *ListAccountsResponseAccountsInnerAvailableBalance `json:"hold,omitempty"`
+	Hold *AccountAvailableBalance `json:"hold,omitempty"`
 }
 
-// NewListAccountsResponseAccountsInner instantiates a new ListAccountsResponseAccountsInner object
+// NewAccount instantiates a new Account object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewListAccountsResponseAccountsInner() *ListAccountsResponseAccountsInner {
-	this := ListAccountsResponseAccountsInner{}
+func NewAccount() *Account {
+	this := Account{}
 	return &this
 }
 
-// NewListAccountsResponseAccountsInnerWithDefaults instantiates a new ListAccountsResponseAccountsInner object
+// NewAccountWithDefaults instantiates a new Account object
 // This constructor will only assign default values to properties that have it defined,
 // but it doesn't guarantee that properties required by API are set
-func NewListAccountsResponseAccountsInnerWithDefaults() *ListAccountsResponseAccountsInner {
-	this := ListAccountsResponseAccountsInner{}
+func NewAccountWithDefaults() *Account {
+	this := Account{}
 	return &this
 }
 
 // GetUuid returns the Uuid field value if set, zero value otherwise.
-func (o *ListAccountsResponseAccountsInner) GetUuid() string {
+func (o *Account) GetUuid() string {
 	if o == nil || isNil(o.Uuid) {
 		var ret string
 		return ret
@@ -58,7 +58,7 @@ func (o *ListAccountsResponseAccountsInner) GetUuid() string {
 
 // GetUuidOk returns a tuple with the Uuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ListAccountsResponseAccountsInner) GetUuidOk() (*string, bool) {
+func (o *Account) GetUuidOk() (*string, bool) {
 	if o == nil || isNil(o.Uuid) {
     return nil, false
 	}
@@ -66,7 +66,7 @@ func (o *ListAccountsResponseAccountsInner) GetUuidOk() (*string, bool) {
 }
 
 // HasUuid returns a boolean if a field has been set.
-func (o *ListAccountsResponseAccountsInner) HasUuid() bool {
+func (o *Account) HasUuid() bool {
 	if o != nil && !isNil(o.Uuid) {
 		return true
 	}
@@ -75,12 +75,12 @@ func (o *ListAccountsResponseAccountsInner) HasUuid() bool {
 }
 
 // SetUuid gets a reference to the given string and assigns it to the Uuid field.
-func (o *ListAccountsResponseAccountsInner) SetUuid(v string) {
+func (o *Account) SetUuid(v string) {
 	o.Uuid = &v
 }
 
 // GetName returns the Name field value if set, zero value otherwise.
-func (o *ListAccountsResponseAccountsInner) GetName() string {
+func (o *Account) GetName() string {
 	if o == nil || isNil(o.Name) {
 		var ret string
 		return ret
@@ -90,7 +90,7 @@ func (o *ListAccountsResponseAccountsInner) GetName() string {
 
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ListAccountsResponseAccountsInner) GetNameOk() (*string, bool) {
+func (o *Account) GetNameOk() (*string, bool) {
 	if o == nil || isNil(o.Name) {
     return nil, false
 	}
@@ -98,7 +98,7 @@ func (o *ListAccountsResponseAccountsInner) GetNameOk() (*string, bool) {
 }
 
 // HasName returns a boolean if a field has been set.
-func (o *ListAccountsResponseAccountsInner) HasName() bool {
+func (o *Account) HasName() bool {
 	if o != nil && !isNil(o.Name) {
 		return true
 	}
@@ -107,12 +107,12 @@ func (o *ListAccountsResponseAccountsInner) HasName() bool {
 }
 
 // SetName gets a reference to the given string and assigns it to the Name field.
-func (o *ListAccountsResponseAccountsInner) SetName(v string) {
+func (o *Account) SetName(v string) {
 	o.Name = &v
 }
 
 // GetCurrency returns the Currency field value if set, zero value otherwise.
-func (o *ListAccountsResponseAccountsInner) GetCurrency() string {
+func (o *Account) GetCurrency() string {
 	if o == nil || isNil(o.Currency) {
 		var ret string
 		return ret
@@ -122,7 +122,7 @@ func (o *ListAccountsResponseAccountsInner) GetCurrency() string {
 
 // GetCurrencyOk returns a tuple with the Currency field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ListAccountsResponseAccountsInner) GetCurrencyOk() (*string, bool) {
+func (o *Account) GetCurrencyOk() (*string, bool) {
 	if o == nil || isNil(o.Currency) {
     return nil, false
 	}
@@ -130,7 +130,7 @@ func (o *ListAccountsResponseAccountsInner) GetCurrencyOk() (*string, bool) {
 }
 
 // HasCurrency returns a boolean if a field has been set.
-func (o *ListAccountsResponseAccountsInner) HasCurrency() bool {
+func (o *Account) HasCurrency() bool {
 	if o != nil && !isNil(o.Currency) {
 		return true
 	}
@@ -139,14 +139,14 @@ func (o *ListAccountsResponseAccountsInner) HasCurrency() bool {
 }
 
 // SetCurrency gets a reference to the given string and assigns it to the Currency field.
-func (o *ListAccountsResponseAccountsInner) SetCurrency(v string) {
+func (o *Account) SetCurrency(v string) {
 	o.Currency = &v
 }
 
 // GetAvailableBalance returns the AvailableBalance field value if set, zero value otherwise.
-func (o *ListAccountsResponseAccountsInner) GetAvailableBalance() ListAccountsResponseAccountsInnerAvailableBalance {
+func (o *Account) GetAvailableBalance() AccountAvailableBalance {
 	if o == nil || isNil(o.AvailableBalance) {
-		var ret ListAccountsResponseAccountsInnerAvailableBalance
+		var ret AccountAvailableBalance
 		return ret
 	}
 	return *o.AvailableBalance
@@ -154,7 +154,7 @@ func (o *ListAccountsResponseAccountsInner) GetAvailableBalance() ListAccountsRe
 
 // GetAvailableBalanceOk returns a tuple with the AvailableBalance field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ListAccountsResponseAccountsInner) GetAvailableBalanceOk() (*ListAccountsResponseAccountsInnerAvailableBalance, bool) {
+func (o *Account) GetAvailableBalanceOk() (*AccountAvailableBalance, bool) {
 	if o == nil || isNil(o.AvailableBalance) {
     return nil, false
 	}
@@ -162,7 +162,7 @@ func (o *ListAccountsResponseAccountsInner) GetAvailableBalanceOk() (*ListAccoun
 }
 
 // HasAvailableBalance returns a boolean if a field has been set.
-func (o *ListAccountsResponseAccountsInner) HasAvailableBalance() bool {
+func (o *Account) HasAvailableBalance() bool {
 	if o != nil && !isNil(o.AvailableBalance) {
 		return true
 	}
@@ -170,13 +170,13 @@ func (o *ListAccountsResponseAccountsInner) HasAvailableBalance() bool {
 	return false
 }
 
-// SetAvailableBalance gets a reference to the given ListAccountsResponseAccountsInnerAvailableBalance and assigns it to the AvailableBalance field.
-func (o *ListAccountsResponseAccountsInner) SetAvailableBalance(v ListAccountsResponseAccountsInnerAvailableBalance) {
+// SetAvailableBalance gets a reference to the given AccountAvailableBalance and assigns it to the AvailableBalance field.
+func (o *Account) SetAvailableBalance(v AccountAvailableBalance) {
 	o.AvailableBalance = &v
 }
 
 // GetDefault returns the Default field value if set, zero value otherwise.
-func (o *ListAccountsResponseAccountsInner) GetDefault() bool {
+func (o *Account) GetDefault() bool {
 	if o == nil || isNil(o.Default) {
 		var ret bool
 		return ret
@@ -186,7 +186,7 @@ func (o *ListAccountsResponseAccountsInner) GetDefault() bool {
 
 // GetDefaultOk returns a tuple with the Default field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ListAccountsResponseAccountsInner) GetDefaultOk() (*bool, bool) {
+func (o *Account) GetDefaultOk() (*bool, bool) {
 	if o == nil || isNil(o.Default) {
     return nil, false
 	}
@@ -194,7 +194,7 @@ func (o *ListAccountsResponseAccountsInner) GetDefaultOk() (*bool, bool) {
 }
 
 // HasDefault returns a boolean if a field has been set.
-func (o *ListAccountsResponseAccountsInner) HasDefault() bool {
+func (o *Account) HasDefault() bool {
 	if o != nil && !isNil(o.Default) {
 		return true
 	}
@@ -203,12 +203,12 @@ func (o *ListAccountsResponseAccountsInner) HasDefault() bool {
 }
 
 // SetDefault gets a reference to the given bool and assigns it to the Default field.
-func (o *ListAccountsResponseAccountsInner) SetDefault(v bool) {
+func (o *Account) SetDefault(v bool) {
 	o.Default = &v
 }
 
 // GetActive returns the Active field value if set, zero value otherwise.
-func (o *ListAccountsResponseAccountsInner) GetActive() bool {
+func (o *Account) GetActive() bool {
 	if o == nil || isNil(o.Active) {
 		var ret bool
 		return ret
@@ -218,7 +218,7 @@ func (o *ListAccountsResponseAccountsInner) GetActive() bool {
 
 // GetActiveOk returns a tuple with the Active field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ListAccountsResponseAccountsInner) GetActiveOk() (*bool, bool) {
+func (o *Account) GetActiveOk() (*bool, bool) {
 	if o == nil || isNil(o.Active) {
     return nil, false
 	}
@@ -226,7 +226,7 @@ func (o *ListAccountsResponseAccountsInner) GetActiveOk() (*bool, bool) {
 }
 
 // HasActive returns a boolean if a field has been set.
-func (o *ListAccountsResponseAccountsInner) HasActive() bool {
+func (o *Account) HasActive() bool {
 	if o != nil && !isNil(o.Active) {
 		return true
 	}
@@ -235,12 +235,12 @@ func (o *ListAccountsResponseAccountsInner) HasActive() bool {
 }
 
 // SetActive gets a reference to the given bool and assigns it to the Active field.
-func (o *ListAccountsResponseAccountsInner) SetActive(v bool) {
+func (o *Account) SetActive(v bool) {
 	o.Active = &v
 }
 
 // GetCreatedAt returns the CreatedAt field value if set, zero value otherwise.
-func (o *ListAccountsResponseAccountsInner) GetCreatedAt() string {
+func (o *Account) GetCreatedAt() string {
 	if o == nil || isNil(o.CreatedAt) {
 		var ret string
 		return ret
@@ -250,7 +250,7 @@ func (o *ListAccountsResponseAccountsInner) GetCreatedAt() string {
 
 // GetCreatedAtOk returns a tuple with the CreatedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ListAccountsResponseAccountsInner) GetCreatedAtOk() (*string, bool) {
+func (o *Account) GetCreatedAtOk() (*string, bool) {
 	if o == nil || isNil(o.CreatedAt) {
     return nil, false
 	}
@@ -258,7 +258,7 @@ func (o *ListAccountsResponseAccountsInner) GetCreatedAtOk() (*string, bool) {
 }
 
 // HasCreatedAt returns a boolean if a field has been set.
-func (o *ListAccountsResponseAccountsInner) HasCreatedAt() bool {
+func (o *Account) HasCreatedAt() bool {
 	if o != nil && !isNil(o.CreatedAt) {
 		return true
 	}
@@ -267,12 +267,12 @@ func (o *ListAccountsResponseAccountsInner) HasCreatedAt() bool {
 }
 
 // SetCreatedAt gets a reference to the given string and assigns it to the CreatedAt field.
-func (o *ListAccountsResponseAccountsInner) SetCreatedAt(v string) {
+func (o *Account) SetCreatedAt(v string) {
 	o.CreatedAt = &v
 }
 
 // GetUpdatedAt returns the UpdatedAt field value if set, zero value otherwise.
-func (o *ListAccountsResponseAccountsInner) GetUpdatedAt() string {
+func (o *Account) GetUpdatedAt() string {
 	if o == nil || isNil(o.UpdatedAt) {
 		var ret string
 		return ret
@@ -282,7 +282,7 @@ func (o *ListAccountsResponseAccountsInner) GetUpdatedAt() string {
 
 // GetUpdatedAtOk returns a tuple with the UpdatedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ListAccountsResponseAccountsInner) GetUpdatedAtOk() (*string, bool) {
+func (o *Account) GetUpdatedAtOk() (*string, bool) {
 	if o == nil || isNil(o.UpdatedAt) {
     return nil, false
 	}
@@ -290,7 +290,7 @@ func (o *ListAccountsResponseAccountsInner) GetUpdatedAtOk() (*string, bool) {
 }
 
 // HasUpdatedAt returns a boolean if a field has been set.
-func (o *ListAccountsResponseAccountsInner) HasUpdatedAt() bool {
+func (o *Account) HasUpdatedAt() bool {
 	if o != nil && !isNil(o.UpdatedAt) {
 		return true
 	}
@@ -299,12 +299,12 @@ func (o *ListAccountsResponseAccountsInner) HasUpdatedAt() bool {
 }
 
 // SetUpdatedAt gets a reference to the given string and assigns it to the UpdatedAt field.
-func (o *ListAccountsResponseAccountsInner) SetUpdatedAt(v string) {
+func (o *Account) SetUpdatedAt(v string) {
 	o.UpdatedAt = &v
 }
 
 // GetDeletedAt returns the DeletedAt field value if set, zero value otherwise.
-func (o *ListAccountsResponseAccountsInner) GetDeletedAt() string {
+func (o *Account) GetDeletedAt() string {
 	if o == nil || isNil(o.DeletedAt) {
 		var ret string
 		return ret
@@ -314,7 +314,7 @@ func (o *ListAccountsResponseAccountsInner) GetDeletedAt() string {
 
 // GetDeletedAtOk returns a tuple with the DeletedAt field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ListAccountsResponseAccountsInner) GetDeletedAtOk() (*string, bool) {
+func (o *Account) GetDeletedAtOk() (*string, bool) {
 	if o == nil || isNil(o.DeletedAt) {
     return nil, false
 	}
@@ -322,7 +322,7 @@ func (o *ListAccountsResponseAccountsInner) GetDeletedAtOk() (*string, bool) {
 }
 
 // HasDeletedAt returns a boolean if a field has been set.
-func (o *ListAccountsResponseAccountsInner) HasDeletedAt() bool {
+func (o *Account) HasDeletedAt() bool {
 	if o != nil && !isNil(o.DeletedAt) {
 		return true
 	}
@@ -331,12 +331,12 @@ func (o *ListAccountsResponseAccountsInner) HasDeletedAt() bool {
 }
 
 // SetDeletedAt gets a reference to the given string and assigns it to the DeletedAt field.
-func (o *ListAccountsResponseAccountsInner) SetDeletedAt(v string) {
+func (o *Account) SetDeletedAt(v string) {
 	o.DeletedAt = &v
 }
 
 // GetType returns the Type field value if set, zero value otherwise.
-func (o *ListAccountsResponseAccountsInner) GetType() string {
+func (o *Account) GetType() string {
 	if o == nil || isNil(o.Type) {
 		var ret string
 		return ret
@@ -346,7 +346,7 @@ func (o *ListAccountsResponseAccountsInner) GetType() string {
 
 // GetTypeOk returns a tuple with the Type field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ListAccountsResponseAccountsInner) GetTypeOk() (*string, bool) {
+func (o *Account) GetTypeOk() (*string, bool) {
 	if o == nil || isNil(o.Type) {
     return nil, false
 	}
@@ -354,7 +354,7 @@ func (o *ListAccountsResponseAccountsInner) GetTypeOk() (*string, bool) {
 }
 
 // HasType returns a boolean if a field has been set.
-func (o *ListAccountsResponseAccountsInner) HasType() bool {
+func (o *Account) HasType() bool {
 	if o != nil && !isNil(o.Type) {
 		return true
 	}
@@ -363,12 +363,12 @@ func (o *ListAccountsResponseAccountsInner) HasType() bool {
 }
 
 // SetType gets a reference to the given string and assigns it to the Type field.
-func (o *ListAccountsResponseAccountsInner) SetType(v string) {
+func (o *Account) SetType(v string) {
 	o.Type = &v
 }
 
 // GetReady returns the Ready field value if set, zero value otherwise.
-func (o *ListAccountsResponseAccountsInner) GetReady() bool {
+func (o *Account) GetReady() bool {
 	if o == nil || isNil(o.Ready) {
 		var ret bool
 		return ret
@@ -378,7 +378,7 @@ func (o *ListAccountsResponseAccountsInner) GetReady() bool {
 
 // GetReadyOk returns a tuple with the Ready field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ListAccountsResponseAccountsInner) GetReadyOk() (*bool, bool) {
+func (o *Account) GetReadyOk() (*bool, bool) {
 	if o == nil || isNil(o.Ready) {
     return nil, false
 	}
@@ -386,7 +386,7 @@ func (o *ListAccountsResponseAccountsInner) GetReadyOk() (*bool, bool) {
 }
 
 // HasReady returns a boolean if a field has been set.
-func (o *ListAccountsResponseAccountsInner) HasReady() bool {
+func (o *Account) HasReady() bool {
 	if o != nil && !isNil(o.Ready) {
 		return true
 	}
@@ -395,14 +395,14 @@ func (o *ListAccountsResponseAccountsInner) HasReady() bool {
 }
 
 // SetReady gets a reference to the given bool and assigns it to the Ready field.
-func (o *ListAccountsResponseAccountsInner) SetReady(v bool) {
+func (o *Account) SetReady(v bool) {
 	o.Ready = &v
 }
 
 // GetHold returns the Hold field value if set, zero value otherwise.
-func (o *ListAccountsResponseAccountsInner) GetHold() ListAccountsResponseAccountsInnerAvailableBalance {
+func (o *Account) GetHold() AccountAvailableBalance {
 	if o == nil || isNil(o.Hold) {
-		var ret ListAccountsResponseAccountsInnerAvailableBalance
+		var ret AccountAvailableBalance
 		return ret
 	}
 	return *o.Hold
@@ -410,7 +410,7 @@ func (o *ListAccountsResponseAccountsInner) GetHold() ListAccountsResponseAccoun
 
 // GetHoldOk returns a tuple with the Hold field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ListAccountsResponseAccountsInner) GetHoldOk() (*ListAccountsResponseAccountsInnerAvailableBalance, bool) {
+func (o *Account) GetHoldOk() (*AccountAvailableBalance, bool) {
 	if o == nil || isNil(o.Hold) {
     return nil, false
 	}
@@ -418,7 +418,7 @@ func (o *ListAccountsResponseAccountsInner) GetHoldOk() (*ListAccountsResponseAc
 }
 
 // HasHold returns a boolean if a field has been set.
-func (o *ListAccountsResponseAccountsInner) HasHold() bool {
+func (o *Account) HasHold() bool {
 	if o != nil && !isNil(o.Hold) {
 		return true
 	}
@@ -426,12 +426,12 @@ func (o *ListAccountsResponseAccountsInner) HasHold() bool {
 	return false
 }
 
-// SetHold gets a reference to the given ListAccountsResponseAccountsInnerAvailableBalance and assigns it to the Hold field.
-func (o *ListAccountsResponseAccountsInner) SetHold(v ListAccountsResponseAccountsInnerAvailableBalance) {
+// SetHold gets a reference to the given AccountAvailableBalance and assigns it to the Hold field.
+func (o *Account) SetHold(v AccountAvailableBalance) {
 	o.Hold = &v
 }
 
-func (o ListAccountsResponseAccountsInner) MarshalJSON() ([]byte, error) {
+func (o Account) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
 	if !isNil(o.Uuid) {
 		toSerialize["uuid"] = o.Uuid
@@ -472,38 +472,38 @@ func (o ListAccountsResponseAccountsInner) MarshalJSON() ([]byte, error) {
 	return json.Marshal(toSerialize)
 }
 
-type NullableListAccountsResponseAccountsInner struct {
-	value *ListAccountsResponseAccountsInner
+type NullableAccount struct {
+	value *Account
 	isSet bool
 }
 
-func (v NullableListAccountsResponseAccountsInner) Get() *ListAccountsResponseAccountsInner {
+func (v NullableAccount) Get() *Account {
 	return v.value
 }
 
-func (v *NullableListAccountsResponseAccountsInner) Set(val *ListAccountsResponseAccountsInner) {
+func (v *NullableAccount) Set(val *Account) {
 	v.value = val
 	v.isSet = true
 }
 
-func (v NullableListAccountsResponseAccountsInner) IsSet() bool {
+func (v NullableAccount) IsSet() bool {
 	return v.isSet
 }
 
-func (v *NullableListAccountsResponseAccountsInner) Unset() {
+func (v *NullableAccount) Unset() {
 	v.value = nil
 	v.isSet = false
 }
 
-func NewNullableListAccountsResponseAccountsInner(val *ListAccountsResponseAccountsInner) *NullableListAccountsResponseAccountsInner {
-	return &NullableListAccountsResponseAccountsInner{value: val, isSet: true}
+func NewNullableAccount(val *Account) *NullableAccount {
+	return &NullableAccount{value: val, isSet: true}
 }
 
-func (v NullableListAccountsResponseAccountsInner) MarshalJSON() ([]byte, error) {
+func (v NullableAccount) MarshalJSON() ([]byte, error) {
 	return json.Marshal(v.value)
 }
 
-func (v *NullableListAccountsResponseAccountsInner) UnmarshalJSON(src []byte) error {
+func (v *NullableAccount) UnmarshalJSON(src []byte) error {
 	v.isSet = true
 	return json.Unmarshal(src, &v.value)
 }

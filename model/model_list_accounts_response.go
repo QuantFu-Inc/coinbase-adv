@@ -19,7 +19,7 @@ type ListAccountsResponse struct {
 	HasNext *bool `json:"has_next,omitempty"`
 	Cursor *string `json:"cursor,omitempty"`
 	Size *int32 `json:"size,omitempty"`
-	Accounts []ListAccountsResponseAccountsInner `json:"accounts,omitempty"`
+	Accounts []Account `json:"accounts,omitempty"`
 }
 
 // NewListAccountsResponse instantiates a new ListAccountsResponse object
@@ -136,9 +136,9 @@ func (o *ListAccountsResponse) SetSize(v int32) {
 }
 
 // GetAccounts returns the Accounts field value if set, zero value otherwise.
-func (o *ListAccountsResponse) GetAccounts() []ListAccountsResponseAccountsInner {
+func (o *ListAccountsResponse) GetAccounts() []Account {
 	if o == nil || isNil(o.Accounts) {
-		var ret []ListAccountsResponseAccountsInner
+		var ret []Account
 		return ret
 	}
 	return o.Accounts
@@ -146,7 +146,7 @@ func (o *ListAccountsResponse) GetAccounts() []ListAccountsResponseAccountsInner
 
 // GetAccountsOk returns a tuple with the Accounts field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ListAccountsResponse) GetAccountsOk() ([]ListAccountsResponseAccountsInner, bool) {
+func (o *ListAccountsResponse) GetAccountsOk() ([]Account, bool) {
 	if o == nil || isNil(o.Accounts) {
     return nil, false
 	}
@@ -162,8 +162,8 @@ func (o *ListAccountsResponse) HasAccounts() bool {
 	return false
 }
 
-// SetAccounts gets a reference to the given []ListAccountsResponseAccountsInner and assigns it to the Accounts field.
-func (o *ListAccountsResponse) SetAccounts(v []ListAccountsResponseAccountsInner) {
+// SetAccounts gets a reference to the given []Account and assigns it to the Accounts field.
+func (o *ListAccountsResponse) SetAccounts(v []Account) {
 	o.Accounts = v
 }
 

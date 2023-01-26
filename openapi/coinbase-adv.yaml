@@ -5,7 +5,7 @@ info:
   version: 1.0.0
 servers:
   - url: 'https://api.coinbase.com/api/v3'
-    description: Quotes API
+    description: Coinbase Advanced Trading API
 
 externalDocs:
   description: Coinbase Advanced Trading Docs
@@ -61,6 +61,93 @@ paths:
       tags:
         - coinbaseAdv
 
+  "/brokerage/accounts/{uuid}":
+    get:
+      deprecated: false
+      description: Get account by uuid
+      operationId: GetAccount
+      parameters:
+        - in: path
+          name: uuid
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+          description: OK
+        '401':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Unauthorized
+        '403':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Forbidden
+        '404':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Not Found
+      summary: GetAccount
+      tags:
+        - coinbaseAdv
+
+  "/brokerage/orders/historical/batch":
+    get:
+      deprecated: false
+      description: Get historcal orders
+      operationId: ListOrders
+      parameters:
+        - in: query
+          name: product_id
+          schema:
+            type: string
+        - in: query
+          name: order_status
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/OrderStatus'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOrdersResponse'
+          description: OK
+        '401':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Unauthorized
+        '403':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Forbidden
+        '404':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Not Found
+      summary: ListOrders
+      tags:
+        - coinbaseAdv
+
+
+
 components:
   securitySchemes:
     bearerAuth:            # arbitrary name for the security scheme
@@ -68,6 +155,139 @@ components:
       scheme: bearer
 
   schemas:
+
+    ListOrdersResponse:
+      properties:
+        orders:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+        sequence:
+          type: integer
+          x-go-srctype-tag:
+            - string
+        has_next:
+          type: boolean
+        cursor:
+          type: string
+
+    Order:
+      type: object
+      properties:
+        order_id:
+          type: string
+        product_id:
+          type: string
+        user_id:
+          type: string
+        order_configuration:
+          type: object
+          properties:
+            market_market_ioc:
+              type: object
+              properties:
+                quote_size:
+                  type: number
+                  format: double
+                  x-go-srctype-tag:
+                    - string
+        side:
+          type: string
+        client_order_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        time_in_force:
+          type: string
+        created_time:
+          type: string
+        completion_percentage:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        filled_size:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        average_filled_price:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        fee:
+          type: string
+        number_of_fills:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        filled_value:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        pending_cancel:
+          type: boolean
+        size_in_quote:
+          type: boolean
+        total_fees:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        size_inclusive_of_fees:
+          type: boolean
+        total_value_after_fees:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        trigger_status:
+          type: string
+        order_type:
+          type: string
+        reject_reason:
+          type: string
+        settled:
+          type: boolean
+        product_type:
+          type: string
+        reject_message:
+          type: string
+        cancel_message:
+          type: string
+
+
+    OrderStatus:
+      type: string
+      enum:
+        - OPEN
+        - FILLED
+        - CANCELLED
+        - EXPIRED
+        - FAILED
+
+    OrderType:
+      type: string
+      enum:
+        - MARKET
+        - LIMIT
+        - STOP
+        - STOP_LIMIT
+
+    OrderSide:
+      type: string
+      enum:
+        - BUY
+        - SELL
+
+    ProductType:
+      type: string
+      enum:
+        - SPOT
+
     ListAccountsResponse:
       properties:
         has_next:
@@ -80,46 +300,49 @@ components:
         accounts:
           type: array
           items:
-            type: object
-            properties:
-              uuid:
-                type: string
-              name:
-                type: string
-              currency:
-                type: string
-              available_balance:
-                type: object
-                properties:
-                  value:
-                    type: number
-                    format: double
-                    x-go-srctype-tag:
-                      - string
-                  currency:
-                    type: string
-              default:
-                type: boolean
-              active:
-                type: boolean
-              created_at:
-                type: string
-              updated_at:
-                type: string
-              deleted_at:
-                type: string
-                format: nullable
-              type:
-                type: string
-              ready:
-                type: boolean
-              hold:
-                type: object
-                properties:
-                  value:
-                    type: number
-                    format: double
-                    x-go-srctype-tag:
-                      - string
-                  currency:
-                    type: string
+            $ref: '#/components/schemas/Account'
+
+    Account:
+      type: object
+      properties:
+        uuid:
+          type: string
+        name:
+          type: string
+        currency:
+          type: string
+        available_balance:
+          type: object
+          properties:
+            value:
+              type: number
+              format: double
+              x-go-srctype-tag:
+                - string
+            currency:
+              type: string
+        default:
+          type: boolean
+        active:
+          type: boolean
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        deleted_at:
+          type: string
+          format: nullable
+        type:
+          type: string
+        ready:
+          type: boolean
+        hold:
+          type: object
+          properties:
+            value:
+              type: number
+              format: double
+              x-go-srctype-tag:
+                - string
+            currency:
+              type: string

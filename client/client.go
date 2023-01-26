@@ -122,7 +122,7 @@ func (c *Client) GetAndDecode(URL url.URL, dest interface{}, headers *map[string
 				req.Header.Add(key, val)
 			}
 		}
-		c.checkAuthentication(req, nil)
+		c.CheckAuthentication(req, nil)
 		return c.DoAndDecode(req, dest)
 	}
 }
@@ -159,7 +159,7 @@ func (c *Client) PostAndDecode(URL url.URL, dest interface{}, headers *map[strin
 				req.Header.Add(key, val)
 			}
 		}
-		c.checkAuthentication(req, payload)
+		c.CheckAuthentication(req, payload)
 		return c.DoAndDecode(req, dest)
 	}
 }
@@ -215,10 +215,12 @@ func (c *Client) addInt32Param(params map[string]string, k string, i int32) {
 }
 
 func (c *Client) addStringParam(params map[string]string, k string, v string) {
-	params[k] = v
+	if len(v) > 0 {
+		params[k] = v
+	}
 }
 
-func (c *Client) checkAuthentication(req *http.Request, body []byte) {
+func (c *Client) CheckAuthentication(req *http.Request, body []byte) {
 
 	if len(c.AccessToken) > 0 {
 		// ok, using Oauth2
