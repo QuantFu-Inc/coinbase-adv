@@ -20,12 +20,14 @@ type OrderSide string
 
 // List of OrderSide
 const (
+	UNKNOWN_ORDER_SIDE OrderSide = "UNKNOWN_ORDER_SIDE"
 	BUY OrderSide = "BUY"
 	SELL OrderSide = "SELL"
 )
 
 // All allowed values of OrderSide enum
 var AllowedOrderSideEnumValues = []OrderSide{
+	"UNKNOWN_ORDER_SIDE",
 	"BUY",
 	"SELL",
 }

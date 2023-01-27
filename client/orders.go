@@ -2,6 +2,7 @@ package client
 
 import (
 	"coinbase-adv/model"
+	"encoding/json"
 	"net/url"
 	"strings"
 	"time"
@@ -10,6 +11,28 @@ import (
 const (
 	DefaultLimit = 50
 )
+
+// CreateOrder -- create order
+func (c *Client) CreateOrder(p *model.CreateOrderRequest) (*model.CreateOrderResponse, error) {
+
+	var (
+		u, _        = url.Parse(CoinbaseAdv_Endpoint + "/brokerage/orders")
+		response    model.CreateOrderResponse
+		headersMap  = make(map[string]string)
+		queryParams = make(map[string]string)
+	)
+
+	payload, err := json.Marshal(p)
+	if err != nil {
+		return nil, err
+	}
+
+	err = c.PostAndDecode(*u, &response, &headersMap, &queryParams, payload)
+	if err != nil {
+		return nil, err
+	}
+	return &response, err
+}
 
 type ListOrdersParams struct {
 	ProductId          string

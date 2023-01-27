@@ -233,18 +233,157 @@ paths:
               schema:
                 type: string
           description: Not Found
-      summary: ListOrders
+      summary: ListFills
+      tags:
+        - coinbaseAdv
+
+  "/brokerage/orders":
+    post:
+      deprecated: false
+      description: Create new order
+      operationId: CreateOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOrderRequest"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateOrderResponse'
+          description: OK
+        '401':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Unauthorized
+        '403':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Forbidden
+        '404':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Not Found
+      summary: CreateOrder
       tags:
         - coinbaseAdv
 
 
 components:
   securitySchemes:
-    bearerAuth:            # arbitrary name for the security scheme
+    bearerAuth: # arbitrary name for the security scheme
       type: http
       scheme: bearer
 
   schemas:
+
+    CreateOrderResponse:
+      properties:
+        success:
+          type: boolean
+        failure_reason:
+          type: string
+        order_id:
+          type: string
+        success_response:
+          type: object
+          properties:
+            order_id:
+              type: string
+            product_id:
+              type: string
+            side:
+              type: string
+            client_order_id:
+              type: string
+        error_response:
+          type: object
+          properties:
+            error:
+              type: string
+            message:
+              type: string
+            error_details:
+              type: string
+            preview_failure_reason:
+              type: string
+            new_order_failure_reason:
+              type: string
+        order_configuration:
+          $ref: '#/components/schemas/OutputOrderConfiguration'
+
+    CreateOrderRequest:
+      properties:
+        client_order_id:
+          type: string
+        product_id:
+          type: string
+        side:
+          type: string
+        order_configuration:
+          type: object
+          properties:
+            # Note: CB API expects strings for the values
+            market_market_ioc:
+              type: object
+              properties:
+                quote_size:
+                  type: string
+                base_size:
+                  type: string
+            limit_limit_gtc:
+              type: object
+              properties:
+                base_size:
+                  type: string
+                limit_price:
+                  type: string
+                post_only:
+                  type: boolean
+            limit_limit_gtd:
+              type: object
+              properties:
+                base_size:
+                  type: string
+                limit_price:
+                  type: string
+                end_time:
+                  type: string
+                post_only:
+                  type: boolean
+            stop_limit_stop_limit_gtc:
+              type: object
+              properties:
+                base_size:
+                  type: string
+                limit_price:
+                  type: string
+                stop_price:
+                  type: string
+                stop_direction:
+                  type: string
+            stop_limit_stop_limit_gtd:
+              type: object
+              properties:
+                base_size:
+                  type: string
+                limit_price:
+                  type: string
+                stop_price:
+                  type: string
+                end_time:
+                  type: string
+                stop_direction:
+                  type: string
+
 
     ListFillsResponse:
       properties:
@@ -321,21 +460,91 @@ components:
         user_id:
           type: string
         order_configuration:
+          $ref: '#/components/schemas/OutputOrderConfiguration'
+        side:
+          type: string
+        client_order_id:
+          type: string
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+        time_in_force:
+          type: string
+        created_time:
+          type: string
+        completion_percentage:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        filled_size:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        average_filled_price:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        fee:
+          type: string
+        number_of_fills:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        filled_value:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        pending_cancel:
+          type: boolean
+        size_in_quote:
+          type: boolean
+        total_fees:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        size_inclusive_of_fees:
+          type: boolean
+        total_value_after_fees:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        trigger_status:
+          type: string
+        order_type:
+          type: string
+        reject_reason:
+          type: string
+        settled:
+          type: boolean
+        product_type:
+          type: string
+        reject_message:
+          type: string
+        cancel_message:
+          type: string
+
+    OutputOrderConfiguration:
+      type: object
+      properties:
+        market_market_ioc:
           type: object
           properties:
-            market_market_ioc:
-              type: object
-              properties:
-                quote_size:
-                  type: number
-                  format: double
-                  x-go-srctype-tag:
-                    - string
-                base_size:
-                  type: number
-                  format: double
-                  x-go-srctype-tag:
-                    - string
+            quote_size:
+              type: number
+              format: double
+              x-go-srctype-tag:
+                - string
+            base_size:
+              type: number
+              format: double
+              x-go-srctype-tag:
+                - string
         limit_limit_gtc:
           type: object
           properties:
@@ -410,73 +619,6 @@ components:
               type: string
             stop_direction:
               type: string
-        side:
-          type: string
-        client_order_id:
-          type: string
-        status:
-          $ref: '#/components/schemas/OrderStatus'
-        time_in_force:
-          type: string
-        created_time:
-          type: string
-        completion_percentage:
-          type: number
-          format: double
-          x-go-srctype-tag:
-            - string
-        filled_size:
-          type: number
-          format: double
-          x-go-srctype-tag:
-            - string
-        average_filled_price:
-          type: number
-          format: double
-          x-go-srctype-tag:
-            - string
-        fee:
-          type: string
-        number_of_fills:
-          type: number
-          format: double
-          x-go-srctype-tag:
-            - string
-        filled_value:
-          type: number
-          format: double
-          x-go-srctype-tag:
-            - string
-        pending_cancel:
-          type: boolean
-        size_in_quote:
-          type: boolean
-        total_fees:
-          type: number
-          format: double
-          x-go-srctype-tag:
-            - string
-        size_inclusive_of_fees:
-          type: boolean
-        total_value_after_fees:
-          type: number
-          format: double
-          x-go-srctype-tag:
-            - string
-        trigger_status:
-          type: string
-        order_type:
-          type: string
-        reject_reason:
-          type: string
-        settled:
-          type: boolean
-        product_type:
-          type: string
-        reject_message:
-          type: string
-        cancel_message:
-          type: string
 
 
     OrderStatus:
@@ -499,6 +641,7 @@ components:
     OrderSide:
       type: string
       enum:
+        - UNKNOWN_ORDER_SIDE
         - BUY
         - SELL
 
@@ -506,6 +649,65 @@ components:
       type: string
       enum:
         - SPOT
+
+    StopDirection:
+      type: string
+      enum:
+        - UNKNOWN_STOP_DIRECTION
+        - STOP_DIRECTION_STOP_UP
+        - STOP_DIRECTION_STOP_DOWN
+
+    FailureReason:
+      type: string
+      enum:
+        - UNKNOWN_FAILURE_REASON
+        - UNSUPPORTED_ORDER_CONFIGURATION
+        - INVALID_SIDE
+        - INVALID_PRODUCT_ID
+        - INVALID_SIZE_PRECISION
+        - INVALID_PRICE_PRECISION
+        - INSUFFICIENT_FUND
+        - INVALID_LEDGER_BALANCE
+        - ORDER_ENTRY_DISABLED
+        - INELIGIBLE_PAIR
+        - INVALID_LIMIT_PRICE_POST_ONLY
+        - INVALID_LIMIT_PRICE
+        - INVALID_NO_LIQUIDITY
+        - INVALID_REQUEST
+        - COMMANDER_REJECTED_NEW_ORDER
+        - INSUFFICIENT_FUNDS
+
+    PreviewFailureReason:
+      type: string
+      enum:
+        - UNKNOWN_PREVIEW_FAILURE_REASON
+        - PREVIEW_MISSING_COMMISSION_RATE
+        - PREVIEW_INVALID_SIDE
+        - PREVIEW_INVALID_ORDER_CONFIG
+        - PREVIEW_INVALID_PRODUCT_ID
+        - PREVIEW_INVALID_SIZE_PRECISION
+        - PREVIEW_INVALID_PRICE_PRECISION
+        - PREVIEW_MISSING_PRODUCT_PRICE_BOOK
+        - PREVIEW_INVALID_LEDGER_BALANCE
+        - PREVIEW_INSUFFICIENT_LEDGER_BALANCE
+        - PREVIEW_INVALID_LIMIT_PRICE_POST_ONLY
+        - PREVIEW_INVALID_LIMIT_PRICE
+        - PREVIEW_INVALID_NO_LIQUIDITY
+        - PREVIEW_INSUFFICIENT_FUND
+        - PREVIEW_INVALID_COMMISSION_CONFIGURATION
+        - PREVIEW_INVALID_STOP_PRICE
+        - PREVIEW_INVALID_BASE_SIZE_TOO_LARGE
+        - PREVIEW_INVALID_BASE_SIZE_TOO_SMALL
+        - PREVIEW_INVALID_QUOTE_SIZE_PRECISION
+        - PREVIEW_INVALID_QUOTE_SIZE_TOO_LARGE
+        - PREVIEW_INVALID_PRICE_TOO_LARGE
+        - PREVIEW_INVALID_QUOTE_SIZE_TOO_SMALL
+        - PREVIEW_BREACHED_PRICE_LIMIT
+        - PREVIEW_BREACHED_ACCOUNT_POSITION_LIMIT
+        - PREVIEW_BREACHED_COMPANY_POSITION_LIMIT
+        - PREVIEW_INVALID_MARGIN_HEALTH
+        - PREVIEW_RISK_PROXY_FAILURE
+
 
     ListAccountsResponse:
       properties:

@@ -19,11 +19,7 @@ type Order struct {
 	OrderId *string `json:"order_id,omitempty"`
 	ProductId *string `json:"product_id,omitempty"`
 	UserId *string `json:"user_id,omitempty"`
-	OrderConfiguration *OrderOrderConfiguration `json:"order_configuration,omitempty"`
-	LimitLimitGtc *OrderLimitLimitGtc `json:"limit_limit_gtc,omitempty"`
-	LimitLimitGtd *OrderLimitLimitGtd `json:"limit_limit_gtd,omitempty"`
-	StopLimitStopLimitGtc *OrderStopLimitStopLimitGtc `json:"stop_limit_stop_limit_gtc,omitempty"`
-	StopLimitStopLimitGtd *OrderStopLimitStopLimitGtd `json:"stop_limit_stop_limit_gtd,omitempty"`
+	OrderConfiguration *OutputOrderConfiguration `json:"order_configuration,omitempty"`
 	Side *string `json:"side,omitempty"`
 	ClientOrderId *string `json:"client_order_id,omitempty"`
 	Status *OrderStatus `json:"status,omitempty"`
@@ -163,9 +159,9 @@ func (o *Order) SetUserId(v string) {
 }
 
 // GetOrderConfiguration returns the OrderConfiguration field value if set, zero value otherwise.
-func (o *Order) GetOrderConfiguration() OrderOrderConfiguration {
+func (o *Order) GetOrderConfiguration() OutputOrderConfiguration {
 	if o == nil || isNil(o.OrderConfiguration) {
-		var ret OrderOrderConfiguration
+		var ret OutputOrderConfiguration
 		return ret
 	}
 	return *o.OrderConfiguration
@@ -173,7 +169,7 @@ func (o *Order) GetOrderConfiguration() OrderOrderConfiguration {
 
 // GetOrderConfigurationOk returns a tuple with the OrderConfiguration field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Order) GetOrderConfigurationOk() (*OrderOrderConfiguration, bool) {
+func (o *Order) GetOrderConfigurationOk() (*OutputOrderConfiguration, bool) {
 	if o == nil || isNil(o.OrderConfiguration) {
     return nil, false
 	}
@@ -189,137 +185,9 @@ func (o *Order) HasOrderConfiguration() bool {
 	return false
 }
 
-// SetOrderConfiguration gets a reference to the given OrderOrderConfiguration and assigns it to the OrderConfiguration field.
-func (o *Order) SetOrderConfiguration(v OrderOrderConfiguration) {
+// SetOrderConfiguration gets a reference to the given OutputOrderConfiguration and assigns it to the OrderConfiguration field.
+func (o *Order) SetOrderConfiguration(v OutputOrderConfiguration) {
 	o.OrderConfiguration = &v
-}
-
-// GetLimitLimitGtc returns the LimitLimitGtc field value if set, zero value otherwise.
-func (o *Order) GetLimitLimitGtc() OrderLimitLimitGtc {
-	if o == nil || isNil(o.LimitLimitGtc) {
-		var ret OrderLimitLimitGtc
-		return ret
-	}
-	return *o.LimitLimitGtc
-}
-
-// GetLimitLimitGtcOk returns a tuple with the LimitLimitGtc field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Order) GetLimitLimitGtcOk() (*OrderLimitLimitGtc, bool) {
-	if o == nil || isNil(o.LimitLimitGtc) {
-    return nil, false
-	}
-	return o.LimitLimitGtc, true
-}
-
-// HasLimitLimitGtc returns a boolean if a field has been set.
-func (o *Order) HasLimitLimitGtc() bool {
-	if o != nil && !isNil(o.LimitLimitGtc) {
-		return true
-	}
-
-	return false
-}
-
-// SetLimitLimitGtc gets a reference to the given OrderLimitLimitGtc and assigns it to the LimitLimitGtc field.
-func (o *Order) SetLimitLimitGtc(v OrderLimitLimitGtc) {
-	o.LimitLimitGtc = &v
-}
-
-// GetLimitLimitGtd returns the LimitLimitGtd field value if set, zero value otherwise.
-func (o *Order) GetLimitLimitGtd() OrderLimitLimitGtd {
-	if o == nil || isNil(o.LimitLimitGtd) {
-		var ret OrderLimitLimitGtd
-		return ret
-	}
-	return *o.LimitLimitGtd
-}
-
-// GetLimitLimitGtdOk returns a tuple with the LimitLimitGtd field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Order) GetLimitLimitGtdOk() (*OrderLimitLimitGtd, bool) {
-	if o == nil || isNil(o.LimitLimitGtd) {
-    return nil, false
-	}
-	return o.LimitLimitGtd, true
-}
-
-// HasLimitLimitGtd returns a boolean if a field has been set.
-func (o *Order) HasLimitLimitGtd() bool {
-	if o != nil && !isNil(o.LimitLimitGtd) {
-		return true
-	}
-
-	return false
-}
-
-// SetLimitLimitGtd gets a reference to the given OrderLimitLimitGtd and assigns it to the LimitLimitGtd field.
-func (o *Order) SetLimitLimitGtd(v OrderLimitLimitGtd) {
-	o.LimitLimitGtd = &v
-}
-
-// GetStopLimitStopLimitGtc returns the StopLimitStopLimitGtc field value if set, zero value otherwise.
-func (o *Order) GetStopLimitStopLimitGtc() OrderStopLimitStopLimitGtc {
-	if o == nil || isNil(o.StopLimitStopLimitGtc) {
-		var ret OrderStopLimitStopLimitGtc
-		return ret
-	}
-	return *o.StopLimitStopLimitGtc
-}
-
-// GetStopLimitStopLimitGtcOk returns a tuple with the StopLimitStopLimitGtc field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Order) GetStopLimitStopLimitGtcOk() (*OrderStopLimitStopLimitGtc, bool) {
-	if o == nil || isNil(o.StopLimitStopLimitGtc) {
-    return nil, false
-	}
-	return o.StopLimitStopLimitGtc, true
-}
-
-// HasStopLimitStopLimitGtc returns a boolean if a field has been set.
-func (o *Order) HasStopLimitStopLimitGtc() bool {
-	if o != nil && !isNil(o.StopLimitStopLimitGtc) {
-		return true
-	}
-
-	return false
-}
-
-// SetStopLimitStopLimitGtc gets a reference to the given OrderStopLimitStopLimitGtc and assigns it to the StopLimitStopLimitGtc field.
-func (o *Order) SetStopLimitStopLimitGtc(v OrderStopLimitStopLimitGtc) {
-	o.StopLimitStopLimitGtc = &v
-}
-
-// GetStopLimitStopLimitGtd returns the StopLimitStopLimitGtd field value if set, zero value otherwise.
-func (o *Order) GetStopLimitStopLimitGtd() OrderStopLimitStopLimitGtd {
-	if o == nil || isNil(o.StopLimitStopLimitGtd) {
-		var ret OrderStopLimitStopLimitGtd
-		return ret
-	}
-	return *o.StopLimitStopLimitGtd
-}
-
-// GetStopLimitStopLimitGtdOk returns a tuple with the StopLimitStopLimitGtd field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Order) GetStopLimitStopLimitGtdOk() (*OrderStopLimitStopLimitGtd, bool) {
-	if o == nil || isNil(o.StopLimitStopLimitGtd) {
-    return nil, false
-	}
-	return o.StopLimitStopLimitGtd, true
-}
-
-// HasStopLimitStopLimitGtd returns a boolean if a field has been set.
-func (o *Order) HasStopLimitStopLimitGtd() bool {
-	if o != nil && !isNil(o.StopLimitStopLimitGtd) {
-		return true
-	}
-
-	return false
-}
-
-// SetStopLimitStopLimitGtd gets a reference to the given OrderStopLimitStopLimitGtd and assigns it to the StopLimitStopLimitGtd field.
-func (o *Order) SetStopLimitStopLimitGtd(v OrderStopLimitStopLimitGtd) {
-	o.StopLimitStopLimitGtd = &v
 }
 
 // GetSide returns the Side field value if set, zero value otherwise.
@@ -1071,18 +939,6 @@ func (o Order) MarshalJSON() ([]byte, error) {
 	}
 	if !isNil(o.OrderConfiguration) {
 		toSerialize["order_configuration"] = o.OrderConfiguration
-	}
-	if !isNil(o.LimitLimitGtc) {
-		toSerialize["limit_limit_gtc"] = o.LimitLimitGtc
-	}
-	if !isNil(o.LimitLimitGtd) {
-		toSerialize["limit_limit_gtd"] = o.LimitLimitGtd
-	}
-	if !isNil(o.StopLimitStopLimitGtc) {
-		toSerialize["stop_limit_stop_limit_gtc"] = o.StopLimitStopLimitGtc
-	}
-	if !isNil(o.StopLimitStopLimitGtd) {
-		toSerialize["stop_limit_stop_limit_gtd"] = o.StopLimitStopLimitGtd
 	}
 	if !isNil(o.Side) {
 		toSerialize["side"] = o.Side

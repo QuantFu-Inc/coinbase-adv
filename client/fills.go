@@ -29,6 +29,7 @@ func (c *Client) ListFills(p *ListFillsParams) (*model.ListFillsResponse, error)
 		if p.Limit > 0 {
 			c.addInt32Param(queryParams, "limit", p.Limit)
 		}
+		c.addStringParam(queryParams, "order_id", p.OrderId)
 		c.addStringParam(queryParams, "product_id", p.ProductId)
 
 		if !p.StartSequenceTimestamp.IsZero() {
