@@ -16,7 +16,7 @@ const (
 // GetOrder -- get order
 func (c *Client) GetOrder(id string) (*model.GetOrderResponse, error) {
 	var (
-		u, _        = url.Parse(CoinbaseAdv_Endpoint + fmt.Sprintf("/brokerage/orders/historical/%s", id))
+		u, _        = url.Parse(CoinbaseAdv_V3Endpoint + fmt.Sprintf("/brokerage/orders/historical/%s", id))
 		response    model.GetOrderResponse
 		headersMap  = make(map[string]string)
 		queryParams = make(map[string]string)
@@ -32,7 +32,7 @@ func (c *Client) GetOrder(id string) (*model.GetOrderResponse, error) {
 // CancelOrder -- cancel order
 func (c *Client) CancelOrders(ids []string) (*model.CancelOrderResponse, error) {
 	var (
-		u, _        = url.Parse(CoinbaseAdv_Endpoint + "/brokerage/orders/batch_cancel")
+		u, _        = url.Parse(CoinbaseAdv_V3Endpoint + "/brokerage/orders/batch_cancel")
 		response    model.CancelOrderResponse
 		headersMap  = make(map[string]string)
 		queryParams = make(map[string]string)
@@ -57,7 +57,7 @@ func (c *Client) CancelOrders(ids []string) (*model.CancelOrderResponse, error) 
 func (c *Client) CreateOrder(p *model.CreateOrderRequest) (*model.CreateOrderResponse, error) {
 
 	var (
-		u, _        = url.Parse(CoinbaseAdv_Endpoint + "/brokerage/orders")
+		u, _        = url.Parse(CoinbaseAdv_V3Endpoint + "/brokerage/orders")
 		response    model.CreateOrderResponse
 		headersMap  = make(map[string]string)
 		queryParams = make(map[string]string)
@@ -93,7 +93,7 @@ type ListOrdersParams struct {
 func (c *Client) ListOrders(p *ListOrdersParams) (*model.ListOrdersResponse, error) {
 
 	var (
-		u, _        = url.Parse(CoinbaseAdv_Endpoint + "/brokerage/orders/historical/batch")
+		u, _        = url.Parse(CoinbaseAdv_V3Endpoint + "/brokerage/orders/historical/batch")
 		response    model.ListOrdersResponse
 		headersMap  = make(map[string]string)
 		queryParams = make(map[string]string)

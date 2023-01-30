@@ -14,7 +14,7 @@ type ListAccountsParams struct {
 // ListAccounts -- list user's accounts
 func (c *Client) ListAccounts(p *ListAccountsParams) (*model.ListAccountsResponse, error) {
 	var (
-		u, _        = url.Parse(CoinbaseAdv_Endpoint + "/brokerage/accounts")
+		u, _        = url.Parse(CoinbaseAdv_V3Endpoint + "/brokerage/accounts")
 		response    model.ListAccountsResponse
 		headersMap  = make(map[string]string)
 		queryParams = make(map[string]string)
@@ -42,7 +42,7 @@ type GetAccountResponse struct {
 // GetAccount -- get account details
 func (c *Client) GetAccount(uuid string) (*model.Account, error) {
 	var (
-		u, _        = url.Parse(CoinbaseAdv_Endpoint + fmt.Sprintf("/brokerage/accounts/%s", uuid))
+		u, _        = url.Parse(CoinbaseAdv_V3Endpoint + fmt.Sprintf("/brokerage/accounts/%s", uuid))
 		response    GetAccountResponse
 		headersMap  = make(map[string]string)
 		queryParams = make(map[string]string)

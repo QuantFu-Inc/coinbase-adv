@@ -16,8 +16,9 @@ import (
 )
 
 const (
-	CoinbaseAdv_Endpoint = "https://api.coinbase.com/api/v3"
-	APISpeedLimit        = 200 // throttled below as ms
+	CoinbaseAdv_V3Endpoint = "https://api.coinbase.com/api/v3"
+	CoinbaseAdv_V2Endpoint = "https://api.coinbase.com/v2"
+	APISpeedLimit          = 200 // throttled below as ms
 )
 
 type Client struct {

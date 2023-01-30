@@ -4,7 +4,7 @@ info:
   description: OpenAPI 3.x specification for Coinbase Adavanced Trading
   version: 1.0.0
 servers:
-  - url: 'https://api.coinbase.com/api/v3'
+  - url: 'https://api.coinbase.com/api'
     description: Coinbase Advanced Trading API
 
 externalDocs:
@@ -17,7 +17,7 @@ security:
   - bearerAuth: []
 
 paths:
-  "/brokerage/accounts":
+  "/api/v3/brokerage/accounts":
     get:
       deprecated: false
       description: List accounts for the user
@@ -61,7 +61,7 @@ paths:
       tags:
         - coinbaseAdv
 
-  "/brokerage/accounts/{uuid}":
+  "/api/v3/brokerage/accounts/{uuid}":
     get:
       deprecated: false
       description: Get account by uuid
@@ -101,7 +101,7 @@ paths:
       tags:
         - coinbaseAdv
 
-  "/brokerage/orders/historical/{order_id}":
+  "/api/v3/brokerage/orders/historical/{order_id}":
     get:
       deprecated: false
       description: Get order
@@ -142,7 +142,7 @@ paths:
         - coinbaseAdv
 
 
-  "/brokerage/orders/historical/batch":
+  "/api/v3/brokerage/orders/historical/batch":
     get:
       deprecated: false
       description: Get historcal orders
@@ -219,7 +219,7 @@ paths:
       tags:
         - coinbaseAdv
 
-  "/brokerage/orders/historical/fills":
+  "/api/v3/brokerage/orders/historical/fills":
     get:
       deprecated: false
       description: Get historcal fills
@@ -278,7 +278,7 @@ paths:
       tags:
         - coinbaseAdv
 
-  "/brokerage/orders":
+  "/api/v3/brokerage/orders":
     post:
       deprecated: false
       description: Create new order
@@ -317,7 +317,7 @@ paths:
       tags:
         - coinbaseAdv
 
-  "/brokerage/orders/batch_cancel":
+  "/api/v3/brokerage/orders/batch_cancel":
     post:
       deprecated: false
       description: Cancel orders
@@ -356,6 +356,51 @@ paths:
       tags:
         - coinbaseAdv
 
+  "/v2/prices/{currency_pair}/{side}":
+    get:
+      deprecated: false
+      description: Get price
+      operationId: GetPrice
+      parameters:
+        - in: path
+          name: currency_pair
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: side
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPriceResponse'
+          description: OK
+        '401':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Unauthorized
+        '403':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Forbidden
+        '404':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Not Found
+      summary: GetPrice
+      tags:
+        - coinbaseAdv
+
 
 components:
   securitySchemes:
@@ -364,6 +409,20 @@ components:
       scheme: bearer
 
   schemas:
+    GetPriceResponse:
+      type: object
+      properties:
+        data:
+          type: object
+          properties:
+            amount:
+              type: number
+              format: double
+              x-go-srctype-tag:
+                - string
+            currency:
+              type: string
+
     GetOrderResponse:
       type: object
       properties:
