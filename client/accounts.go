@@ -1,9 +1,9 @@
 package client
 
 import (
-	"coinbase-adv/model"
 	"fmt"
 	"net/url"
+	"quantfu.com/coinbase-adv/model"
 )
 
 type ListAccountsParams struct {
