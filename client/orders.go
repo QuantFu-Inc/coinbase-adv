@@ -3,6 +3,7 @@ package client
 import (
 	"coinbase-adv/model"
 	"encoding/json"
+	"fmt"
 	"net/url"
 	"strings"
 	"time"
@@ -11,6 +12,46 @@ import (
 const (
 	DefaultLimit = 50
 )
+
+// GetOrder -- get order
+func (c *Client) GetOrder(id string) (*model.GetOrderResponse, error) {
+	var (
+		u, _        = url.Parse(CoinbaseAdv_Endpoint + fmt.Sprintf("/brokerage/orders/historical/%s", id))
+		response    model.GetOrderResponse
+		headersMap  = make(map[string]string)
+		queryParams = make(map[string]string)
+	)
+
+	err := c.GetAndDecode(*u, &response, &headersMap, &queryParams)
+	if err != nil {
+		return nil, err
+	}
+	return &response, err
+}
+
+// CancelOrder -- cancel order
+func (c *Client) CancelOrders(ids []string) (*model.CancelOrderResponse, error) {
+	var (
+		u, _        = url.Parse(CoinbaseAdv_Endpoint + "/brokerage/orders/batch_cancel")
+		response    model.CancelOrderResponse
+		headersMap  = make(map[string]string)
+		queryParams = make(map[string]string)
+	)
+
+	p := model.CancelOrderRequest{OrderIds: ids}
+
+	payload, err := json.Marshal(p)
+	if err != nil {
+		return nil, err
+	}
+
+	err = c.PostAndDecode(*u, &response, &headersMap, &queryParams, payload)
+	if err != nil {
+		return nil, err
+	}
+	return &response, err
+
+}
 
 // CreateOrder -- create order
 func (c *Client) CreateOrder(p *model.CreateOrderRequest) (*model.CreateOrderResponse, error) {

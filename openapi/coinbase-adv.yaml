@@ -101,6 +101,47 @@ paths:
       tags:
         - coinbaseAdv
 
+  "/brokerage/orders/historical/{order_id}":
+    get:
+      deprecated: false
+      description: Get order
+      operationId: GetOrder
+      parameters:
+        - in: path
+          name: order_id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOrderResponse'
+          description: OK
+        '401':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Unauthorized
+        '403':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Forbidden
+        '404':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Not Found
+      summary: GetOrder
+      tags:
+        - coinbaseAdv
+
+
   "/brokerage/orders/historical/batch":
     get:
       deprecated: false
@@ -276,6 +317,45 @@ paths:
       tags:
         - coinbaseAdv
 
+  "/brokerage/orders/batch_cancel":
+    post:
+      deprecated: false
+      description: Cancel orders
+      operationId: CancelOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelOrderRequest'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CancelOrderResponse'
+          description: OK
+        '401':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Unauthorized
+        '403':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Forbidden
+        '404':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Not Found
+      summary: CancelOrder
+      tags:
+        - coinbaseAdv
+
 
 components:
   securitySchemes:
@@ -284,6 +364,35 @@ components:
       scheme: bearer
 
   schemas:
+    GetOrderResponse:
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/Order'
+
+    CancelOrderResponse:
+      type: object
+      properties:
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              success:
+                type: boolean
+              failure_reason:
+                type: string
+              order_id:
+                type: string
+
+    CancelOrderRequest:
+      type: object
+      properties:
+        order_ids:
+          type: array
+          items:
+            type: string
+
 
     CreateOrderResponse:
       properties:
