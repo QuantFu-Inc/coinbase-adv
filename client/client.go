@@ -236,3 +236,8 @@ func (c *Client) CheckAuthentication(req *http.Request, body []byte) {
 	// API Key auth.
 	c.apiKeyAuth(req, reqPath, body)
 }
+
+func (c *Client) IsTokenValid(tm int64) bool {
+	// TODO -- check expiry
+	return true
+}
