@@ -6,6 +6,7 @@ import (
 	"quantfu.com/coinbase-adv/client"
 	"quantfu.com/coinbase-adv/model"
 	"testing"
+	"time"
 )
 
 func Test_ListFills(t *testing.T) {
@@ -53,10 +54,11 @@ func Test_ListFills(t *testing.T) {
 
 		for _, f := range frsp.Fills {
 
-			fmt.Printf("[%s] [%s] %f  @ %f \n", f.GetProductId(), f.GetSide(), f.GetSize(), f.GetPrice())
+			tm, _ := time.Parse(time.RFC3339, f.GetTradeTime())
+
+			fmt.Printf("[%s] [%s] [%s] %f  @ %f \n", tm.String(), f.GetProductId(), f.GetSide(), f.GetSize(), f.GetPrice())
 
 		}
-
 	}
 
 }
