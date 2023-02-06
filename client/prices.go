@@ -15,7 +15,7 @@ type Quote struct {
 // GetPrice -- get price
 func (c *Client) GetPrice(currency string, side string) (*float64, error) {
 	var (
-		u, _        = url.Parse(CoinbaseAdv_V2Endpoint + fmt.Sprintf("/prices/%s/%s", currency, strings.ToLower(side)))
+		u, _        = url.Parse(CoinbaseAdvV2endpoint + fmt.Sprintf("/prices/%s/%s", currency, strings.ToLower(side)))
 		response    model.GetPriceResponse
 		headersMap  = make(map[string]string)
 		queryParams = make(map[string]string)

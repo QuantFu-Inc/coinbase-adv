@@ -20,7 +20,7 @@ type ListFillsParams struct {
 func (c *Client) ListFills(p *ListFillsParams) (*model.ListFillsResponse, error) {
 
 	var (
-		u, _        = url.Parse(CoinbaseAdv_V3Endpoint + "/brokerage/orders/historical/fills")
+		u, _        = url.Parse(CoinbaseAdvV3endpoint + "/brokerage/orders/historical/fills")
 		response    model.ListFillsResponse
 		headersMap  = make(map[string]string)
 		queryParams = make(map[string]string)

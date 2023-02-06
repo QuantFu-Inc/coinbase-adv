@@ -16,21 +16,21 @@ import (
 )
 
 const (
-	CoinbaseAdv_V3Endpoint = "https://api.coinbase.com/api/v3"
-	CoinbaseAdv_V2Endpoint = "https://api.coinbase.com/v2"
-	APISpeedLimit          = 200 // throttled below as ms
+	CoinbaseAdvV3endpoint = "https://api.coinbase.com/api/v3"
+	CoinbaseAdvV2endpoint = "https://api.coinbase.com/v2"
+	APISpeedLimit         = 100 // throttled below as ms
 )
 
 type Client struct {
 
 	// API Key based auth
-	ApiKey  string
-	ApiSKey string
+	apiKey  string
+	apiSKey string
 
 	// OAuth2 based auth
-	AccessToken           string
-	AccessTokenExpiration time.Time
-	RefreshToken          string
+	accessToken           string
+	accessTokenExpiration time.Time
+	refreshToken          string
 
 	httpClient     *http.Client
 	sessionHeaders map[string]string
@@ -54,20 +54,20 @@ type Credentials struct {
 //	return fmt.Sprint("Authentication token expired")
 //}
 
-func NewClient(creds *Credentials) (c *Client) {
-	c = &Client{
+func NewClient(creds *Credentials) (cb CoinbaseClient) {
+	c := &Client{
 		httpClient: &http.Client{Timeout: time.Second * 10},
 	}
 	c.sessionHeaders = make(map[string]string)
 	if creds != nil {
-		c.AccessToken = creds.AccessToken
-		c.ApiKey = creds.ApiKey
-		c.ApiSKey = creds.ApiSKey
+		c.accessToken = creds.AccessToken
+		c.apiKey = creds.ApiKey
+		c.apiSKey = creds.ApiSKey
 	}
-	if len(c.AccessToken) > 0 {
-		c.sessionHeaders["Authorization"] = "Bearer " + c.AccessToken
+	if len(c.accessToken) > 0 {
+		c.sessionHeaders["Authorization"] = "Bearer " + c.accessToken
 	}
-	return
+	return c
 }
 
 func (c *Client) HttpClient() *http.Client {
@@ -170,6 +170,8 @@ func (c *Client) PostAndDecode(URL url.URL, dest interface{}, headers *map[strin
 // Last fallback is a plain interface.
 func (c *Client) DoAndDecode(req *http.Request, dest interface{}) (err error) {
 
+	//st := time.Now()
+
 	req.Header.Add("Content-Type", "application/json")
 	res, err := c.httpClient.Do(req)
 	if err != nil {
@@ -182,8 +184,12 @@ func (c *Client) DoAndDecode(req *http.Request, dest interface{}) (err error) {
 
 	body, err := io.ReadAll(res.Body)
 	if err != nil {
-		return fmt.Errorf("Got read error on body: %s", err.Error())
+		return fmt.Errorf("got read error on body: %s", err.Error())
 	}
+
+	//et := time.Now()
+	//df := et.Sub(st)
+	//fmt.Printf("[%d], [%s] [%s] \n", df.Milliseconds(), req.URL.Path, req.URL.RawQuery)
 
 	if res.StatusCode/100 != 2 {
 		return fmt.Errorf(string(body))
@@ -201,11 +207,11 @@ func (c *Client) apiKeyAuth(req *http.Request, reqPath string, body []byte) {
 
 	ts := strconv.FormatInt(time.Now().UTC().Unix(), 10)
 	message := ts + req.Method + reqPath + string(body)
-	h := hmac.New(sha256.New, []byte(c.ApiSKey))
+	h := hmac.New(sha256.New, []byte(c.apiSKey))
 	h.Write([]byte(message))
 	signature := hex.EncodeToString(h.Sum(nil))
 
-	req.Header.Set("CB-ACCESS-KEY", c.ApiKey)
+	req.Header.Set("CB-ACCESS-KEY", c.apiKey)
 	req.Header.Set("CB-ACCESS-TIMESTAMP", ts)
 	req.Header.Set("CB-ACCESS-SIGN", signature)
 }
@@ -223,8 +229,9 @@ func (c *Client) addStringParam(params map[string]string, k string, v string) {
 
 func (c *Client) CheckAuthentication(req *http.Request, body []byte) {
 
-	if len(c.AccessToken) > 0 {
-		// ok, using Oauth2
+	if len(c.accessToken) > 0 {
+		// ok, using Oauth2, it will be
+		// added as Auth header  Bearer
 	}
 
 	apiSig, ok := req.Header["CB-ACCESS-SIGN"]
@@ -237,7 +244,7 @@ func (c *Client) CheckAuthentication(req *http.Request, body []byte) {
 	c.apiKeyAuth(req, reqPath, body)
 }
 
-func (c *Client) IsTokenValid(tm int64) bool {
-	// TODO -- check expiry
+func (c *Client) IsTokenValid(_ int64) bool {
+	// TODO -- check expiry and renew
 	return true
 }
