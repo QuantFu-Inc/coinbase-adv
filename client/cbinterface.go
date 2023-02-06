@@ -22,4 +22,5 @@ type CoinbaseClient interface {
 	CheckAuthentication(req *http.Request, body []byte)
 	HttpClient() *http.Client
 	IsTokenValid(timestamp int64) bool
+	SetRateLimit(ms int64)
 }

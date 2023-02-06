@@ -12,13 +12,14 @@ import (
 	"net/url"
 	"strconv"
 	"sync"
+	"sync/atomic"
 	"time"
 )
 
 const (
 	CoinbaseAdvV3endpoint = "https://api.coinbase.com/api/v3"
 	CoinbaseAdvV2endpoint = "https://api.coinbase.com/v2"
-	APISpeedLimit         = 100 // throttled below as ms
+	DefaultAPIRateLimit   = 100 // (ms) throttled below
 )
 
 type Client struct {
@@ -37,6 +38,8 @@ type Client struct {
 
 	lastRequest int64
 	reqLock     sync.Mutex
+
+	rateLimit atomic.Int64
 }
 
 type Credentials struct {
@@ -58,6 +61,7 @@ func NewClient(creds *Credentials) (cb CoinbaseClient) {
 	c := &Client{
 		httpClient: &http.Client{Timeout: time.Second * 10},
 	}
+	c.rateLimit.Store(DefaultAPIRateLimit)
 	c.sessionHeaders = make(map[string]string)
 	if creds != nil {
 		c.accessToken = creds.AccessToken
@@ -78,17 +82,27 @@ func (c *Client) AddSessionHeader(k string, v string) {
 	c.sessionHeaders[k] = v
 }
 
-func (c *Client) checkThrottle() {
-	c.reqLock.Lock()
-	defer c.reqLock.Unlock()
+// Rate limit the client since Coinbase only allows API calls / second.
+// Default is 100ms - DefaultAPIRateLimit
+func (c *Client) SetRateLimit(ms int64) {
+	c.rateLimit.Store(ms)
+}
 
-	tm := time.Now().UnixMilli()
-	df := tm - c.lastRequest
-	if df < APISpeedLimit {
-		waitTm := APISpeedLimit - df
-		time.Sleep(time.Millisecond * time.Duration(waitTm))
+func (c *Client) checkThrottle() {
+	limit := c.rateLimit.Load()
+
+	if limit > 0 {
+		c.reqLock.Lock()
+		defer c.reqLock.Unlock()
+
+		tm := time.Now().UnixMilli()
+		df := tm - c.lastRequest
+		if df < limit {
+			waitTm := limit - df
+			time.Sleep(time.Millisecond * time.Duration(waitTm))
+		}
+		c.lastRequest = time.Now().UnixMilli()
 	}
-	c.lastRequest = time.Now().UnixMilli()
 }
 
 // GetAndDecode retrieves from the endpoint and unmarshals resulting json into
@@ -97,8 +111,6 @@ func (c *Client) GetAndDecode(URL url.URL, dest interface{}, headers *map[string
 	//if time.Now().After(c.AccessTokenExpiration) {
 	//	return &AuthExpiredError{}
 	//}
-
-	c.checkThrottle()
 
 	v := url.Values{}
 	if urlValues != nil {
@@ -170,7 +182,9 @@ func (c *Client) PostAndDecode(URL url.URL, dest interface{}, headers *map[strin
 // Last fallback is a plain interface.
 func (c *Client) DoAndDecode(req *http.Request, dest interface{}) (err error) {
 
-	//st := time.Now()
+	c.checkThrottle()
+
+	// st := time.Now()
 
 	req.Header.Add("Content-Type", "application/json")
 	res, err := c.httpClient.Do(req)
