@@ -1,10 +1,10 @@
 package test
 
 import (
+	"QuantFu-Inc/coinbase-adv/client"
+	"QuantFu-Inc/coinbase-adv/model"
 	"fmt"
 	"os"
-	"quantfu.com/coinbase-adv/client"
-	"quantfu.com/coinbase-adv/model"
 	"testing"
 	"time"
 )

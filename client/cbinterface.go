@@ -1,8 +1,8 @@
 package client
 
 import (
+	"QuantFu-Inc/coinbase-adv/model"
 	"net/http"
-	"quantfu.com/coinbase-adv/model"
 )
 
 type CoinbaseClient interface {
