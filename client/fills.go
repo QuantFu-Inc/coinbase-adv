@@ -1,7 +1,7 @@
 package client
 
 import (
-	"QuantFu-Inc/coinbase-adv/model"
+	"github.com/QuantFu-Inc/coinbase-adv/model"
 	"net/url"
 	"time"
 )

@@ -1,3 +1,3 @@
-module QuantFu-Inc/coinbase-adv
+module github.com/QuantFu-Inc/coinbase-adv
 
 go 1.17

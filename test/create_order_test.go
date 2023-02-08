@@ -1,9 +1,9 @@
 package test
 
 import (
-	"QuantFu-Inc/coinbase-adv/client"
-	"QuantFu-Inc/coinbase-adv/model"
 	"fmt"
+	"github.com/QuantFu-Inc/coinbase-adv/client"
+	"github.com/QuantFu-Inc/coinbase-adv/model"
 	"os"
 	"testing"
 	"time"

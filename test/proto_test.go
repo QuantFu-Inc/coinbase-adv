@@ -1,8 +1,8 @@
 package test
 
 import (
-	"QuantFu-Inc/coinbase-adv/client"
 	"fmt"
+	"github.com/QuantFu-Inc/coinbase-adv/client"
 	"io"
 	"net/http"
 	"os"
