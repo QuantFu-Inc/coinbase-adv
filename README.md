@@ -1,4 +1,9 @@
-# go-coinbase-adv
+# DISCLAIMER
+This is a work in progress. You are responsible for any use. APIs may change. You assume all risks.
+
+#
+#
+# coinbase-adv
 
 ### Go implementation for Coinbase Advanced Trading API 
 
@@ -7,6 +12,8 @@
   - See /test for example calls to APIs
 
   - Supports authentication via API key or via OAuth token.
+
+
 
 
 ```
