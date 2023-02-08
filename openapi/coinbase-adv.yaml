@@ -401,6 +401,45 @@ paths:
       tags:
         - coinbaseAdv
 
+  "/v3/brokerage/products/{product_id}":
+    get:
+      deprecated: false
+      description: Get product
+      operationId: GetProduct
+      parameters:
+        - in: path
+          name: product_id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProductResponse'
+          description: OK
+        '401':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Unauthorized
+        '403':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Forbidden
+        '404':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Not Found
+      summary: GetProduct
+      tags:
+        - coinbaseAdv
 
 components:
   securitySchemes:
@@ -409,6 +448,100 @@ components:
       scheme: bearer
 
   schemas:
+
+    GetProductResponse:
+      type: object
+      properties:
+        product_id:
+          type: string
+        price:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        price_percentage_change_24h:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        volume_24h:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        volume_percentage_change_24h:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        base_increment:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        quote_increment:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        quote_min_size:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        quote_max_size:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        base_min_size:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        base_max_size:
+          type: number
+          format: double
+          x-go-srctype-tag:
+            - string
+        base_name:
+          type: string
+        quote_name:
+          type: string
+        watched:
+          type: boolean
+        is_disabled:
+          type: boolean
+        new:
+          type: boolean
+        status:
+          type: string
+        cancel_only:
+          type: boolean
+        limit_only:
+          type: boolean
+        post_only:
+          type: boolean
+        trading_disabled:
+          type: boolean
+        auction_mode:
+          type: boolean
+        product_type:
+          type: string
+        quote_currency_id:
+          type: string
+        base_currency_id:
+          type: string
+        fcm_trading_session_details:
+          type: string
+          format: nullable
+        mid_market_price:
+          type: string
+        base_display_symbol:
+          type: string
+        quote_display_symbol:
+          type: string
+
     GetPriceResponse:
       type: object
       properties:

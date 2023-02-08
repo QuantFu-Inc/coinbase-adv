@@ -21,7 +21,7 @@ func Test_API(t *testing.T) {
 
 	cln := client.NewClient(&creds)
 
-	url := "https://api.coinbase.com/api/v3/brokerage/orders/historical/batch?limit=50&start_date=2017-01-01T00:00:00Z"
+	url := "https://api.coinbase.com/api/v3/brokerage/products/ETH-USD"
 	method := "GET"
 
 	client := &http.Client{}
