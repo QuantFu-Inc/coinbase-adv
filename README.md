@@ -13,8 +13,17 @@ This is a work in progress. You are responsible for any use. APIs may change. Yo
 
   - Supports authentication via API key or via OAuth token.
 
+#
+### Install
+
+ `go get github.com/QuantFu-Inc/coinbase-adv@v0.2.2-beta`
+
+### Import library
+`import "github.com/QuantFu-Inc/coinbase-adv/client" `
 
 
+#
+### Example code
 
 ```
 // ListAccounts Example (/test/list_accounts_test.go)
