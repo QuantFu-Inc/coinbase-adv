@@ -401,6 +401,46 @@ paths:
       tags:
         - coinbaseAdv
 
+  "/v2/exchange-rates":
+    get:
+      deprecated: false
+      description: Get exchange rate
+      operationId: GetExchangeRate
+      parameters:
+        - in: query
+          name: currency
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetExchangeRateResponse'
+          description: OK
+        '401':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Unauthorized
+        '403':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Forbidden
+        '404':
+          content:
+            text/plain:
+              schema:
+                type: string
+          description: Not Found
+      summary: GetExchangeRate
+      tags:
+        - coinbaseAdv
+
   "/v3/brokerage/products/{product_id}":
     get:
       deprecated: false
@@ -448,6 +488,18 @@ components:
       scheme: bearer
 
   schemas:
+
+    GetExchangeRateResponse:
+      properties:
+        data:
+          type: object
+          properties:
+            currency:
+              type: string
+            rates:
+              type: object
+              additionalProperties:
+                type: string
 
     GetProductResponse:
       type: object

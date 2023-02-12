@@ -61,5 +61,30 @@ func Test_GetQuote(t *testing.T) {
 	}
 
 	fmt.Printf("%s,  b = %f,  s = %f", currency, q.Buy, q.Sell)
+}
 
+func Test_GetExchangeRates(t *testing.T) {
+	//devToken := os.Getenv("CB-ACTOKEN")
+	//creds := client.Credentials{AccessToken: devToken}
+
+	creds := client.Credentials{
+		ApiKey:      os.Getenv("CB-APIKEY"),
+		ApiSKey:     os.Getenv("CB-SKEY"),
+		AccessToken: os.Getenv("CB-ACTOKEN"),
+	}
+
+	currency := "USD"
+
+	cln := client.NewClient(&creds)
+
+	exd, err := cln.GetExchangeRate(currency)
+	if err != nil {
+		fmt.Println(err)
+		t.FailNow()
+		return
+	}
+
+	for s, r := range exd.GetRates() {
+		fmt.Printf("%s :  %s , %s\n", currency, s, r)
+	}
 }

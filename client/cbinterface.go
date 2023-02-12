@@ -17,6 +17,7 @@ type CoinbaseClient interface {
 	ListOrders(p *ListOrdersParams) (*model.ListOrdersResponse, error)
 	GetPrice(currency string, side string) (*float64, error)
 	GetQuote(currency string) (*Quote, error)
+	GetExchangeRate(currency string) (*model.GetExchangeRateResponseData, error)
 	GetProduct(productId string) (*model.GetProductResponse, error)
 
 	// utility funcs

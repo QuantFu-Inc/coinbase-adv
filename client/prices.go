@@ -45,3 +45,19 @@ func (c *Client) GetQuote(currency string) (*Quote, error) {
 	qt.Sell = *sellRv
 	return &qt, nil
 }
+
+// GetExchangeRate -- get exchange rate
+func (c *Client) GetExchangeRate(currency string) (*model.GetExchangeRateResponseData, error) {
+	var (
+		u, _        = url.Parse(CoinbaseAdvV2endpoint + fmt.Sprintf("/exchange-rates?currency=%s", currency))
+		response    model.GetExchangeRateResponse
+		headersMap  = make(map[string]string)
+		queryParams = make(map[string]string)
+	)
+
+	err := c.GetAndDecode(*u, &response, &headersMap, &queryParams)
+	if err != nil {
+		return nil, err
+	}
+	return response.Data, err
+}
