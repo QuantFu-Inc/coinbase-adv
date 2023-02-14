@@ -1,13 +1,16 @@
 package test
 
 import (
+	"context"
 	"fmt"
-	"github.com/QuantFu-Inc/coinbase-adv/client"
 	"os"
 	"testing"
+
+	"github.com/QuantFu-Inc/coinbase-adv/client"
 )
 
 func Test_ListAccounts(t *testing.T) {
+	ctx := context.Background()
 	//devToken := os.Getenv("CB-ACTOKEN")
 	//creds := client.Credentials{AccessToken: devToken}
 
@@ -19,7 +22,7 @@ func Test_ListAccounts(t *testing.T) {
 
 	cln := client.NewClient(&creds)
 
-	rsp, err := cln.ListAccounts(nil)
+	rsp, err := cln.ListAccounts(ctx, nil)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -43,7 +46,7 @@ func Test_ListAccounts(t *testing.T) {
 			Cursor: rsp.Cursor,
 		}
 
-		rsp, err = cln.ListAccounts(&p)
+		rsp, err = cln.ListAccounts(ctx, &p)
 		if err != nil {
 			fmt.Println(err)
 			t.FailNow()

@@ -1,9 +1,11 @@
 package client
 
 import (
+	"context"
 	"fmt"
-	"github.com/QuantFu-Inc/coinbase-adv/model"
 	"net/url"
+
+	"github.com/QuantFu-Inc/coinbase-adv/model"
 )
 
 type ListAccountsParams struct {
@@ -12,7 +14,7 @@ type ListAccountsParams struct {
 }
 
 // ListAccounts -- list user's accounts
-func (c *Client) ListAccounts(p *ListAccountsParams) (*model.ListAccountsResponse, error) {
+func (c *Client) ListAccounts(ctx context.Context, p *ListAccountsParams) (*model.ListAccountsResponse, error) {
 	var (
 		u, _        = url.Parse(CoinbaseAdvV3endpoint + "/brokerage/accounts")
 		response    model.ListAccountsResponse
@@ -28,7 +30,7 @@ func (c *Client) ListAccounts(p *ListAccountsParams) (*model.ListAccountsRespons
 		}
 	}
 
-	err := c.GetAndDecode(*u, &response, &headersMap, &queryParams)
+	err := c.GetAndDecode(ctx, *u, &response, &headersMap, &queryParams)
 	if err != nil {
 		return nil, err
 	}
@@ -40,7 +42,7 @@ type GetAccountResponse struct {
 }
 
 // GetAccount -- get account details
-func (c *Client) GetAccount(uuid string) (*model.Account, error) {
+func (c *Client) GetAccount(ctx context.Context, uuid string) (*model.Account, error) {
 	var (
 		u, _        = url.Parse(CoinbaseAdvV3endpoint + fmt.Sprintf("/brokerage/accounts/%s", uuid))
 		response    GetAccountResponse
@@ -48,7 +50,7 @@ func (c *Client) GetAccount(uuid string) (*model.Account, error) {
 		queryParams = make(map[string]string)
 	)
 
-	err := c.GetAndDecode(*u, &response, &headersMap, &queryParams)
+	err := c.GetAndDecode(ctx, *u, &response, &headersMap, &queryParams)
 	if err != nil {
 		return nil, err
 	}

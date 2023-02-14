@@ -1,15 +1,18 @@
 package test
 
 import (
+	"context"
 	"fmt"
-	"github.com/QuantFu-Inc/coinbase-adv/client"
-	"github.com/QuantFu-Inc/coinbase-adv/model"
 	"os"
 	"testing"
 	"time"
+
+	"github.com/QuantFu-Inc/coinbase-adv/client"
+	"github.com/QuantFu-Inc/coinbase-adv/model"
 )
 
 func Test_CreateMarketOrderBuy(t *testing.T) {
+	ctx := context.Background()
 	//devToken := os.Getenv("CB-ACTOKEN")
 	//creds := client.Credentials{AccessToken: devToken}
 
@@ -25,7 +28,7 @@ func Test_CreateMarketOrderBuy(t *testing.T) {
 	prod := "SOL-USD"
 	side := string(model.BUY)
 
-	qt, err := cln.GetQuote("SOL-USD")
+	qt, err := cln.GetQuote(ctx, "SOL-USD")
 
 	baseQty := 0.5
 	quoteQty := qt.Buy * baseQty
@@ -42,7 +45,7 @@ func Test_CreateMarketOrderBuy(t *testing.T) {
 		},
 	}
 
-	rsp, err := cln.CreateOrder(p)
+	rsp, err := cln.CreateOrder(ctx, p)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -57,7 +60,7 @@ func Test_CreateMarketOrderBuy(t *testing.T) {
 			ProductId: *rsp.SuccessResponse.ProductId,
 		}
 
-		frsp, err := cln.ListFills(pf)
+		frsp, err := cln.ListFills(ctx, pf)
 		if err != nil {
 			fmt.Println(err)
 			t.FailNow()
@@ -147,6 +150,7 @@ func Test_CreateMarketOrderBuy(t *testing.T) {
 //}
 
 func Test_CreateLimitOrder(t *testing.T) {
+	ctx := context.Background()
 	//devToken := os.Getenv("CB-ACTOKEN")
 	//creds := client.Credentials{AccessToken: devToken}
 
@@ -176,7 +180,7 @@ func Test_CreateLimitOrder(t *testing.T) {
 		},
 	}
 
-	rsp, err := cln.CreateOrder(p)
+	rsp, err := cln.CreateOrder(ctx, p)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -189,7 +193,7 @@ func Test_CreateLimitOrder(t *testing.T) {
 			OrderStatus: []string{string(model.OPEN)},
 		}
 
-		rsp, err := cln.ListOrders(&p)
+		rsp, err := cln.ListOrders(ctx, &p)
 		if err != nil {
 			fmt.Println(err)
 			t.FailNow()

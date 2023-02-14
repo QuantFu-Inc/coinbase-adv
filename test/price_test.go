@@ -1,13 +1,16 @@
 package test
 
 import (
+	"context"
 	"fmt"
-	"github.com/QuantFu-Inc/coinbase-adv/client"
 	"os"
 	"testing"
+
+	"github.com/QuantFu-Inc/coinbase-adv/client"
 )
 
 func Test_GetPrice(t *testing.T) {
+	ctx := context.Background()
 	//devToken := os.Getenv("CB-ACTOKEN")
 	//creds := client.Credentials{AccessToken: devToken}
 
@@ -21,14 +24,14 @@ func Test_GetPrice(t *testing.T) {
 
 	cln := client.NewClient(&creds)
 
-	bPr, err := cln.GetPrice(currency, "BUY")
+	bPr, err := cln.GetPrice(ctx, currency, "BUY")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
 		return
 	}
 
-	sPr, err := cln.GetPrice(currency, "SELL")
+	sPr, err := cln.GetPrice(ctx, currency, "SELL")
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -40,6 +43,7 @@ func Test_GetPrice(t *testing.T) {
 }
 
 func Test_GetQuote(t *testing.T) {
+	ctx := context.Background()
 	//devToken := os.Getenv("CB-ACTOKEN")
 	//creds := client.Credentials{AccessToken: devToken}
 
@@ -53,7 +57,7 @@ func Test_GetQuote(t *testing.T) {
 
 	cln := client.NewClient(&creds)
 
-	q, err := cln.GetQuote(currency)
+	q, err := cln.GetQuote(ctx, currency)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -64,6 +68,7 @@ func Test_GetQuote(t *testing.T) {
 }
 
 func Test_GetExchangeRates(t *testing.T) {
+	ctx := context.Background()
 	//devToken := os.Getenv("CB-ACTOKEN")
 	//creds := client.Credentials{AccessToken: devToken}
 
@@ -77,7 +82,7 @@ func Test_GetExchangeRates(t *testing.T) {
 
 	cln := client.NewClient(&creds)
 
-	exd, err := cln.GetExchangeRate(currency)
+	exd, err := cln.GetExchangeRate(ctx, currency)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()

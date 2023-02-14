@@ -1,15 +1,18 @@
 package test
 
 import (
+	"context"
 	"fmt"
-	"github.com/QuantFu-Inc/coinbase-adv/client"
-	"github.com/QuantFu-Inc/coinbase-adv/model"
 	"os"
 	"testing"
 	"time"
+
+	"github.com/QuantFu-Inc/coinbase-adv/client"
+	"github.com/QuantFu-Inc/coinbase-adv/model"
 )
 
 func Test_ListFills(t *testing.T) {
+	ctx := context.Background()
 	//devToken := os.Getenv("CB-ACTOKEN")
 	//creds := client.Credentials{AccessToken: devToken}
 
@@ -25,7 +28,7 @@ func Test_ListFills(t *testing.T) {
 		OrderStatus: []string{string(model.FILLED)},
 	}
 
-	rsp, err := cln.ListOrders(p)
+	rsp, err := cln.ListOrders(ctx, p)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -45,7 +48,7 @@ func Test_ListFills(t *testing.T) {
 			ProductId: *o.ProductId,
 		}
 
-		frsp, err := cln.ListFills(pf)
+		frsp, err := cln.ListFills(ctx, pf)
 		if err != nil {
 			fmt.Println(err)
 			t.FailNow()
