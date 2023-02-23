@@ -1,12 +1,14 @@
 package client
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/QuantFu-Inc/coinbase-adv/model"
 	"net/url"
 	"strings"
 	"time"
+
+	"github.com/QuantFu-Inc/coinbase-adv/model"
 )
 
 const (
@@ -14,7 +16,7 @@ const (
 )
 
 // GetOrder -- get order
-func (c *Client) GetOrder(id string) (*model.GetOrderResponse, error) {
+func (c *Client) GetOrder(ctx context.Context, id string) (*model.GetOrderResponse, error) {
 	var (
 		u, _        = url.Parse(CoinbaseAdvV3endpoint + fmt.Sprintf("/brokerage/orders/historical/%s", id))
 		response    model.GetOrderResponse
@@ -22,7 +24,7 @@ func (c *Client) GetOrder(id string) (*model.GetOrderResponse, error) {
 		queryParams = make(map[string]string)
 	)
 
-	err := c.GetAndDecode(*u, &response, &headersMap, &queryParams)
+	err := c.GetAndDecode(ctx, *u, &response, &headersMap, &queryParams)
 	if err != nil {
 		return nil, err
 	}
@@ -30,7 +32,7 @@ func (c *Client) GetOrder(id string) (*model.GetOrderResponse, error) {
 }
 
 // CancelOrders -- cancel orders
-func (c *Client) CancelOrders(ids []string) (*model.CancelOrderResponse, error) {
+func (c *Client) CancelOrders(ctx context.Context, ids []string) (*model.CancelOrderResponse, error) {
 	var (
 		u, _        = url.Parse(CoinbaseAdvV3endpoint + "/brokerage/orders/batch_cancel")
 		response    model.CancelOrderResponse
@@ -45,7 +47,7 @@ func (c *Client) CancelOrders(ids []string) (*model.CancelOrderResponse, error) 
 		return nil, err
 	}
 
-	err = c.PostAndDecode(*u, &response, &headersMap, &queryParams, payload)
+	err = c.PostAndDecode(ctx, *u, &response, &headersMap, &queryParams, payload)
 	if err != nil {
 		return nil, err
 	}
@@ -54,7 +56,7 @@ func (c *Client) CancelOrders(ids []string) (*model.CancelOrderResponse, error) 
 }
 
 // CreateOrder -- create order
-func (c *Client) CreateOrder(p *model.CreateOrderRequest) (*model.CreateOrderResponse, error) {
+func (c *Client) CreateOrder(ctx context.Context, p *model.CreateOrderRequest) (*model.CreateOrderResponse, error) {
 
 	var (
 		u, _        = url.Parse(CoinbaseAdvV3endpoint + "/brokerage/orders")
@@ -68,7 +70,7 @@ func (c *Client) CreateOrder(p *model.CreateOrderRequest) (*model.CreateOrderRes
 		return nil, err
 	}
 
-	err = c.PostAndDecode(*u, &response, &headersMap, &queryParams, payload)
+	err = c.PostAndDecode(ctx, *u, &response, &headersMap, &queryParams, payload)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +92,7 @@ type ListOrdersParams struct {
 }
 
 // ListOrders -- list orders
-func (c *Client) ListOrders(p *ListOrdersParams) (*model.ListOrdersResponse, error) {
+func (c *Client) ListOrders(ctx context.Context, p *ListOrdersParams) (*model.ListOrdersResponse, error) {
 
 	var (
 		u, _        = url.Parse(CoinbaseAdvV3endpoint + "/brokerage/orders/historical/batch")
@@ -130,7 +132,7 @@ func (c *Client) ListOrders(p *ListOrdersParams) (*model.ListOrdersResponse, err
 		c.addInt32Param(queryParams, "limit", DefaultLimit)
 	}
 
-	err := c.GetAndDecode(*u, &response, &headersMap, &queryParams)
+	err := c.GetAndDecode(ctx, *u, &response, &headersMap, &queryParams)
 	if err != nil {
 		return nil, err
 	}

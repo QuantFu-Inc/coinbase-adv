@@ -1,9 +1,11 @@
 package client
 
 import (
-	"github.com/QuantFu-Inc/coinbase-adv/model"
+	"context"
 	"net/url"
 	"time"
+
+	"github.com/QuantFu-Inc/coinbase-adv/model"
 )
 
 type ListFillsParams struct {
@@ -17,7 +19,7 @@ type ListFillsParams struct {
 }
 
 // ListFills -- list fills
-func (c *Client) ListFills(p *ListFillsParams) (*model.ListFillsResponse, error) {
+func (c *Client) ListFills(ctx context.Context, p *ListFillsParams) (*model.ListFillsResponse, error) {
 
 	var (
 		u, _        = url.Parse(CoinbaseAdvV3endpoint + "/brokerage/orders/historical/fills")
@@ -43,7 +45,7 @@ func (c *Client) ListFills(p *ListFillsParams) (*model.ListFillsResponse, error)
 		}
 	}
 
-	err := c.GetAndDecode(*u, &response, &headersMap, &queryParams)
+	err := c.GetAndDecode(ctx, *u, &response, &headersMap, &queryParams)
 	if err != nil {
 		return nil, err
 	}

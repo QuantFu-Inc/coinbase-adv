@@ -1,15 +1,18 @@
 package test
 
 import (
+	"context"
 	"fmt"
-	"github.com/QuantFu-Inc/coinbase-adv/client"
-	"github.com/QuantFu-Inc/coinbase-adv/model"
 	"os"
 	"testing"
 	"time"
+
+	"github.com/QuantFu-Inc/coinbase-adv/client"
+	"github.com/QuantFu-Inc/coinbase-adv/model"
 )
 
 func Test_ListOrders(t *testing.T) {
+	ctx := context.Background()
 	//devToken := os.Getenv("CB-ACTOKEN")
 	//creds := client.Credentials{AccessToken: devToken}
 
@@ -21,7 +24,7 @@ func Test_ListOrders(t *testing.T) {
 
 	cln := client.NewClient(&creds)
 
-	rsp, err := cln.ListOrders(nil)
+	rsp, err := cln.ListOrders(ctx, nil)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -43,7 +46,7 @@ func Test_ListOrders(t *testing.T) {
 			Cursor: rsp.Cursor,
 		}
 
-		rsp, err = cln.ListOrders(&p)
+		rsp, err = cln.ListOrders(ctx, &p)
 		if err != nil {
 			fmt.Println(err)
 			t.FailNow()
@@ -57,6 +60,7 @@ func Test_ListOrders(t *testing.T) {
 }
 
 func Test_ListOrdersOpen(t *testing.T) {
+	ctx := context.Background()
 	//devToken := os.Getenv("CB-ACTOKEN")
 	//creds := client.Credentials{AccessToken: devToken}
 
@@ -72,7 +76,7 @@ func Test_ListOrdersOpen(t *testing.T) {
 		OrderStatus: []string{string(model.OPEN)},
 	}
 
-	rsp, err := cln.ListOrders(&p)
+	rsp, err := cln.ListOrders(ctx, &p)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -90,7 +94,7 @@ func Test_ListOrdersOpen(t *testing.T) {
 			Cursor:      rsp.Cursor,
 		}
 
-		rsp, err = cln.ListOrders(&p)
+		rsp, err = cln.ListOrders(ctx, &p)
 		if err != nil {
 			fmt.Println(err)
 			t.FailNow()
@@ -104,6 +108,7 @@ func Test_ListOrdersOpen(t *testing.T) {
 }
 
 func Test_ListOrdersFilled(t *testing.T) {
+	ctx := context.Background()
 	//devToken := os.Getenv("CB-ACTOKEN")
 	//creds := client.Credentials{AccessToken: devToken}
 
@@ -119,7 +124,7 @@ func Test_ListOrdersFilled(t *testing.T) {
 		OrderStatus: []string{string(model.FILLED)},
 	}
 
-	rsp, err := cln.ListOrders(&p)
+	rsp, err := cln.ListOrders(ctx, &p)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -142,7 +147,7 @@ func Test_ListOrdersFilled(t *testing.T) {
 			Cursor:      rsp.Cursor,
 		}
 
-		rsp, err = cln.ListOrders(&p)
+		rsp, err = cln.ListOrders(ctx, &p)
 		if err != nil {
 			fmt.Println(err)
 			t.FailNow()
@@ -156,6 +161,7 @@ func Test_ListOrdersFilled(t *testing.T) {
 }
 
 func Test_ListOrdersDateFilter(t *testing.T) {
+	ctx := context.Background()
 	//devToken := os.Getenv("CB-ACTOKEN")
 	//creds := client.Credentials{AccessToken: devToken}
 
@@ -175,7 +181,7 @@ func Test_ListOrdersDateFilter(t *testing.T) {
 		EndDate:   et,
 	}
 
-	rsp, err := cln.ListOrders(&p)
+	rsp, err := cln.ListOrders(ctx, &p)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -197,7 +203,7 @@ func Test_ListOrdersDateFilter(t *testing.T) {
 			Cursor: rsp.Cursor,
 		}
 
-		rsp, err = cln.ListOrders(&p)
+		rsp, err = cln.ListOrders(ctx, &p)
 		if err != nil {
 			fmt.Println(err)
 			t.FailNow()
@@ -211,6 +217,7 @@ func Test_ListOrdersDateFilter(t *testing.T) {
 }
 
 func Test_CancelOrdersOpen(t *testing.T) {
+	ctx := context.Background()
 	//devToken := os.Getenv("CB-ACTOKEN")
 	//creds := client.Credentials{AccessToken: devToken}
 
@@ -226,7 +233,7 @@ func Test_CancelOrdersOpen(t *testing.T) {
 		OrderStatus: []string{string(model.OPEN)},
 	}
 
-	rsp, err := cln.ListOrders(&p)
+	rsp, err := cln.ListOrders(ctx, &p)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -239,7 +246,7 @@ func Test_CancelOrdersOpen(t *testing.T) {
 		toCancel = append(toCancel, *o.OrderId)
 	}
 
-	canRsp, err := cln.CancelOrders(toCancel)
+	canRsp, err := cln.CancelOrders(ctx, toCancel)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -253,6 +260,7 @@ func Test_CancelOrdersOpen(t *testing.T) {
 }
 
 func Test_GetOrder(t *testing.T) {
+	ctx := context.Background()
 	//devToken := os.Getenv("CB-ACTOKEN")
 	//creds := client.Credentials{AccessToken: devToken}
 
@@ -268,7 +276,7 @@ func Test_GetOrder(t *testing.T) {
 		Limit: 5,
 	}
 
-	rsp, err := cln.ListOrders(p)
+	rsp, err := cln.ListOrders(ctx, p)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
@@ -279,7 +287,7 @@ func Test_GetOrder(t *testing.T) {
 
 	for _, o := range rsp.Orders {
 
-		io, err := cln.GetOrder(*o.OrderId)
+		io, err := cln.GetOrder(ctx, *o.OrderId)
 		if err != nil {
 			fmt.Println(err)
 			t.FailNow()

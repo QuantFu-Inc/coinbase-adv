@@ -1,10 +1,12 @@
 package client
 
 import (
+	"context"
 	"fmt"
-	"github.com/QuantFu-Inc/coinbase-adv/model"
 	"net/url"
 	"strings"
+
+	"github.com/QuantFu-Inc/coinbase-adv/model"
 )
 
 type Quote struct {
@@ -13,7 +15,7 @@ type Quote struct {
 }
 
 // GetPrice -- get price
-func (c *Client) GetPrice(currency string, side string) (*float64, error) {
+func (c *Client) GetPrice(ctx context.Context, currency string, side string) (*float64, error) {
 	var (
 		u, _        = url.Parse(CoinbaseAdvV2endpoint + fmt.Sprintf("/prices/%s/%s", currency, strings.ToLower(side)))
 		response    model.GetPriceResponse
@@ -21,7 +23,7 @@ func (c *Client) GetPrice(currency string, side string) (*float64, error) {
 		queryParams = make(map[string]string)
 	)
 
-	err := c.GetAndDecode(*u, &response, &headersMap, &queryParams)
+	err := c.GetAndDecode(ctx, *u, &response, &headersMap, &queryParams)
 	if err != nil {
 		return nil, err
 	}
@@ -29,15 +31,15 @@ func (c *Client) GetPrice(currency string, side string) (*float64, error) {
 }
 
 // GetQuote -- get both sides of price
-func (c *Client) GetQuote(currency string) (*Quote, error) {
+func (c *Client) GetQuote(ctx context.Context, currency string) (*Quote, error) {
 
 	qt := Quote{}
 
-	buyRv, err := c.GetPrice(currency, string(model.BUY))
+	buyRv, err := c.GetPrice(ctx, currency, string(model.BUY))
 	if err != nil {
 		return nil, err
 	}
-	sellRv, err := c.GetPrice(currency, string(model.SELL))
+	sellRv, err := c.GetPrice(ctx, currency, string(model.SELL))
 	if err != nil {
 		return nil, err
 	}
@@ -47,7 +49,7 @@ func (c *Client) GetQuote(currency string) (*Quote, error) {
 }
 
 // GetExchangeRate -- get exchange rate
-func (c *Client) GetExchangeRate(currency string) (*model.GetExchangeRateResponseData, error) {
+func (c *Client) GetExchangeRate(ctx context.Context, currency string) (*model.GetExchangeRateResponseData, error) {
 	var (
 		u, _        = url.Parse(CoinbaseAdvV2endpoint + fmt.Sprintf("/exchange-rates?currency=%s", currency))
 		response    model.GetExchangeRateResponse
@@ -55,7 +57,7 @@ func (c *Client) GetExchangeRate(currency string) (*model.GetExchangeRateRespons
 		queryParams = make(map[string]string)
 	)
 
-	err := c.GetAndDecode(*u, &response, &headersMap, &queryParams)
+	err := c.GetAndDecode(ctx, *u, &response, &headersMap, &queryParams)
 	if err != nil {
 		return nil, err
 	}

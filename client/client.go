@@ -2,6 +2,7 @@ package client
 
 import (
 	"bytes"
+	"context"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
@@ -107,7 +108,7 @@ func (c *Client) checkThrottle() {
 
 // GetAndDecode retrieves from the endpoint and unmarshals resulting json into
 // the provided destination interface, which must be a pointer.
-func (c *Client) GetAndDecode(URL url.URL, dest interface{}, headers *map[string]string, urlValues *map[string]string) error {
+func (c *Client) GetAndDecode(ctx context.Context, URL url.URL, dest interface{}, headers *map[string]string, urlValues *map[string]string) error {
 	//if time.Now().After(c.AccessTokenExpiration) {
 	//	return &AuthExpiredError{}
 	//}
@@ -120,7 +121,7 @@ func (c *Client) GetAndDecode(URL url.URL, dest interface{}, headers *map[string
 	}
 	URL.RawQuery = v.Encode()
 
-	if req, err := http.NewRequest(http.MethodGet, URL.String(), nil); err != nil {
+	if req, err := http.NewRequestWithContext(ctx, http.MethodGet, URL.String(), nil); err != nil {
 		return err
 	} else if req == nil {
 		return fmt.Errorf("unable to create request")
@@ -142,7 +143,7 @@ func (c *Client) GetAndDecode(URL url.URL, dest interface{}, headers *map[string
 
 // PostAndDecode retrieves from the endpoint and unmarshals resulting json into
 // the provided destination interface, which must be a pointer.
-func (c *Client) PostAndDecode(URL url.URL, dest interface{}, headers *map[string]string, urlValues *map[string]string, payload []byte) error {
+func (c *Client) PostAndDecode(ctx context.Context, URL url.URL, dest interface{}, headers *map[string]string, urlValues *map[string]string, payload []byte) error {
 	//if c.AccessToken != "" {
 	//	if time.Now().After(c.AccessTokenExpiration) {
 	//		return &AuthExpiredError{}
@@ -157,7 +158,7 @@ func (c *Client) PostAndDecode(URL url.URL, dest interface{}, headers *map[strin
 	}
 	URL.RawQuery = v.Encode()
 	uStr := URL.String()
-	if req, err := http.NewRequest(http.MethodPost, uStr, bytes.NewReader(payload)); err != nil {
+	if req, err := http.NewRequestWithContext(ctx, http.MethodPost, uStr, bytes.NewReader(payload)); err != nil {
 		return err
 	} else if req == nil {
 		return fmt.Errorf("unable to create request")

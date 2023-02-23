@@ -1,13 +1,16 @@
 package test
 
 import (
+	"context"
 	"fmt"
-	"github.com/QuantFu-Inc/coinbase-adv/client"
 	"os"
 	"testing"
+
+	"github.com/QuantFu-Inc/coinbase-adv/client"
 )
 
 func Test_GetProduct(t *testing.T) {
+	ctx := context.Background()
 	//devToken := os.Getenv("CB-ACTOKEN")
 	//creds := client.Credentials{AccessToken: devToken}
 
@@ -21,7 +24,7 @@ func Test_GetProduct(t *testing.T) {
 
 	cln := client.NewClient(&creds)
 
-	rsp, err := cln.GetProduct(product)
+	rsp, err := cln.GetProduct(ctx, product)
 	if err != nil {
 		fmt.Println(err)
 		t.FailNow()
