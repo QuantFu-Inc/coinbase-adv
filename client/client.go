@@ -8,6 +8,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/QuantFu-Inc/coinbase-adv/internal"
 	"io"
 	"net/http"
 	"net/url"
@@ -22,6 +23,10 @@ const (
 	CoinbaseAdvV2endpoint = "https://api.coinbase.com/v2"
 	DefaultAPIRateLimit   = 100 // (ms) throttled below
 )
+
+// HTTPClient is the context key to use with golang.org/x/net/context's
+// WithValue function to associate an *http.Client value with a context.
+var HTTPClient internal.ContextKey
 
 type Client struct {
 
@@ -61,6 +66,24 @@ type Credentials struct {
 func NewClient(creds *Credentials) (cb CoinbaseClient) {
 	c := &Client{
 		httpClient: &http.Client{Timeout: time.Second * 10},
+	}
+	c.rateLimit.Store(DefaultAPIRateLimit)
+	c.sessionHeaders = make(map[string]string)
+	if creds != nil {
+		c.accessToken = creds.AccessToken
+		c.apiKey = creds.ApiKey
+		c.apiSKey = creds.ApiSKey
+	}
+	if len(c.accessToken) > 0 {
+		c.sessionHeaders["Authorization"] = "Bearer " + c.accessToken
+	}
+	return c
+}
+
+func NewClientWithContext(ctx context.Context, creds *Credentials) (cb CoinbaseClient) {
+	httpCln := internal.ContextClient(ctx)
+	c := &Client{
+		httpClient: httpCln,
 	}
 	c.rateLimit.Store(DefaultAPIRateLimit)
 	c.sessionHeaders = make(map[string]string)
