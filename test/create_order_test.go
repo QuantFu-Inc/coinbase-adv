@@ -32,7 +32,7 @@ func Test_CreateMarketOrderBuy(t *testing.T) {
 
 	baseQty := 0.5
 	quoteQty := qt.Buy * baseQty
-	quoteSz := fmt.Sprintf("%f", quoteQty)
+	quoteSz := fmt.Sprintf("%.2f", quoteQty)
 
 	p := &model.CreateOrderRequest{
 		ClientOrderId: &cloid,
