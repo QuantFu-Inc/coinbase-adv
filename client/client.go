@@ -22,6 +22,7 @@ const (
 	CoinbaseAdvV3endpoint = "https://api.coinbase.com/api/v3"
 	CoinbaseAdvV2endpoint = "https://api.coinbase.com/v2"
 	DefaultAPIRateLimit   = 100 // (ms) throttled below
+	rateLimitRetryDelay   = time.Second
 )
 
 // HTTPClient is the context key to use with golang.org/x/net/context's
@@ -211,9 +212,23 @@ func (c *Client) DoAndDecode(req *http.Request, dest interface{}) (err error) {
 	// st := time.Now()
 
 	req.Header.Add("Content-Type", "application/json")
-	res, err := c.httpClient.Do(req)
-	if err != nil {
-		return err
+
+	// retry with 1s backoff if we get rate limited
+	var res *http.Response
+	attempts := 2
+	for attempts > 0 {
+		attempts--
+		res, err = c.httpClient.Do(req)
+
+		if res.StatusCode == http.StatusTooManyRequests && attempts > 0 {
+			time.Sleep(rateLimitRetryDelay)
+			continue
+		}
+		if err != nil {
+			return err
+		} else {
+			break
+		}
 	}
 
 	defer func() {
