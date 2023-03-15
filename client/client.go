@@ -220,7 +220,7 @@ func (c *Client) DoAndDecode(req *http.Request, dest interface{}) (err error) {
 		attempts--
 		res, err = c.httpClient.Do(req)
 
-		if res.StatusCode == http.StatusTooManyRequests && attempts > 0 {
+		if res != nil && res.StatusCode == http.StatusTooManyRequests && attempts > 0 {
 			time.Sleep(rateLimitRetryDelay)
 			continue
 		}
